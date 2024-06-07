@@ -64,9 +64,10 @@ const Page = () => {
 
   const onSubmit = ({
     email,
+    phone,
     password,
   }: TAuthCredentialsValidator) => {
-    mutate({ email, password })
+    mutate({ email, phone, password })
   }
 
   return (

@@ -8,7 +8,7 @@ export const authRouter = router({
   createPayloadUser: publicProcedure
     .input(AuthCredentialsValidator)
     .mutation(async ({ input }) => {
-      const { email, password } = input
+      const { email,phone, password } = input
       const payload = await getPayloadClient()
 
       // check if user already exists
@@ -28,6 +28,7 @@ export const authRouter = router({
         collection: 'users',
         data: {
           email,
+          phone,
           password,
           role: 'user',
         },

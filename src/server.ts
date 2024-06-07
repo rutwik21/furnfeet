@@ -11,10 +11,11 @@ import nextBuild from 'next/dist/build'
 import path from 'path'
 import { PayloadRequest } from 'payload/types'
 import { parse } from 'url'
+import cors from 'cors';
 
 const app = express()
 const PORT = Number(process.env.PORT) || 3000
-
+app.use(cors())
 const createContext = ({
   req,
   res,

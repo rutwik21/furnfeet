@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import MaxWidthWrapper from './MaxWidthWrapper'
-import { Icons } from './Icons'
 import NavItems from './NavItems'
 import { buttonVariants } from './ui/button'
 import Cart from './Cart'
@@ -10,6 +9,7 @@ import UserAccountNav from './UserAccountNav'
 import MobileNav from './MobileNav'
 import Logo from '../../public/furnfeet_logo.png';
 import Image from 'next/image'
+import SearchBar from './SearchBar'
 
 const Navbar = async () => {
   const nextCookies = cookies()
@@ -23,15 +23,15 @@ const Navbar = async () => {
             <div className='flex h-16 items-center'>
               <MobileNav />
 
-              <div className='ml-4 flex lg:ml-0'>
-                <Link href='/'>
-                  <Image src={Logo} alt='logo' className='h-10 w-40' />
+              <div className='ml-4 flex lg:ml-0 '>
+                <Link href='/' >
+                  <Image src={Logo} alt='logo' width={150} height={10} />
                 </Link>
               </div>
 
-              <div className='hidden z-50 lg:ml-8 lg:block lg:self-stretch'>
-                <NavItems />
-              </div>
+              <div className='hidden md:block md:w-auto md:ms-96 '>
+                <SearchBar className='lg:w-80 md:w-auto' />
+               </div>
 
               <div className='ml-auto flex items-center'>
                 <div className='hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6'>
@@ -85,6 +85,14 @@ const Navbar = async () => {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+          <div className='border-b border-gray-200 md:hidden lg:block'>
+            <div className='hidden z-50 lg:ml-8 lg:block lg:self-stretch'>
+              <NavItems />
+            </div>
+            <div className='md:hidden p-2'>
+              <SearchBar />
             </div>
           </div>
         </MaxWidthWrapper>

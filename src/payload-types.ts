@@ -11,8 +11,10 @@ export interface Config {
     users: User;
     products: Product;
     media: Media;
-    product_files: ProductFile;
     orders: Order;
+    product_offer: ProductOffer;
+    product_varient: ProductVarient;
+    product_review: ProductReview;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -21,7 +23,8 @@ export interface Config {
 export interface User {
   id: string;
   products?: (string | Product)[] | null;
-  product_files?: (string | ProductFile)[] | null;
+  product_offer?: (string | ProductOffer)[] | null;
+  phone: number;
   role: 'admin' | 'user';
   updatedAt: string;
   createdAt: string;
@@ -42,11 +45,91 @@ export interface Product {
   name: string;
   description?: string | null;
   price: number;
-  category: 'ui_kits' | 'icons';
-  product_files: string | ProductFile;
+  avg_rating?: number | null;
+  have_varient: 'yes' | 'no';
+  category: 'sofa_and_seating' | 'mattresses' | 'home_decor' | 'furnishings';
+  subcategory: (
+    | 'sofa'
+    | 'l_shape_sofa'
+    | '3_seat_sofa'
+    | '2_seat_sofa'
+    | '1_seat_sofa'
+    | 'recliners'
+    | '3_seat_recliner'
+    | '2_seat_recliner'
+    | '1_seat_recliner'
+    | 'sofa_cum_bed'
+    | 'bean_bag'
+    | 'spring_mattresses'
+    | 'pocket_spring_mattress'
+    | 'bonnell_spring_mattress'
+    | 'memory_foam_mattress'
+    | 'latex_foam_mattress'
+    | 'bonded_foam_mattress'
+    | 'coir_mattress'
+    | 'vases'
+    | 'table_vases'
+    | 'floor_vases'
+    | 'table_decor'
+    | 'decorative_boxes'
+    | 'desk_organizers'
+    | 'magazine_racks'
+    | 'photo_frames'
+    | 'single'
+    | 'collage'
+    | 'clip_photo'
+    | 'candles'
+    | 'decorative_candles'
+    | 'scented_candles'
+    | 'tea_lights_candles'
+    | 'outdoor_decor'
+    | 'artificial_grass'
+    | 'artificial_plants'
+    | 'artificial_flowers'
+    | 'vertical_garden'
+    | 'wall_decor'
+    | 'wall_art'
+    | 'wall_hangings'
+    | 'wallpaper_for_wall'
+    | 'wall_stickers'
+    | 'wall_decor'
+    | 'wall_art'
+    | 'wall_hangings'
+    | 'wallpaper_for_wall'
+    | 'wall_stickers'
+    | 'bed_sheets'
+    | 'king_bed_sheets'
+    | 'queen_bed_sheets'
+    | 'single_bed_sheets'
+    | 'blankets_and_quilts'
+    | 'quilts'
+    | 'dohars'
+    | 'blankets'
+    | 'curtains'
+    | 'door_curtains'
+    | 'window_curtains'
+    | 'blinds'
+    | 'carpets'
+    | '3_by_5'
+    | '5_by_7'
+    | '6_by_9'
+    | '8_by_10'
+    | '9_by_12'
+    | 'cushions_and_covers'
+    | 'pillow'
+    | 'pillow_covers'
+    | 'cushions'
+    | 'cushion_cover'
+    | 'bolster'
+    | 'furnishings'
+    | 'towels'
+    | 'comforters'
+    | 'door_mats'
+  )[];
+  size: string;
+  unit: 'ft' | 'inch';
   approvedForSale?: ('pending' | 'approved' | 'denied') | null;
-  priceId?: string | null;
-  stripeId?: string | null;
+  product_offer?: (string | ProductOffer)[] | null;
   images: {
     image: string | Media;
     id?: string | null;
@@ -54,17 +137,15 @@ export interface Product {
   updatedAt: string;
   createdAt: string;
 }
-export interface ProductFile {
+export interface ProductOffer {
   id: string;
   user?: (string | null) | User;
+  coupon_code: string;
+  min_order_value: number;
+  start_date: string;
+  end_date: string;
   updatedAt: string;
   createdAt: string;
-  url?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
 }
 export interface Media {
   id: string;
@@ -109,6 +190,24 @@ export interface Order {
   _isPaid: boolean;
   user: string | User;
   products: (string | Product)[];
+  updatedAt: string;
+  createdAt: string;
+}
+export interface ProductVarient {
+  id: string;
+  products: (string | Product)[];
+  color?: ('red' | 'green' | 'blue') | null;
+  size: string;
+  unit: 'ft' | 'in';
+  updatedAt: string;
+  createdAt: string;
+}
+export interface ProductReview {
+  id: string;
+  user?: (string | null) | User;
+  products?: (string | null) | Product;
+  rating: number;
+  rewiew?: string | null;
   updatedAt: string;
   createdAt: string;
 }

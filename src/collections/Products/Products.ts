@@ -2,10 +2,10 @@ import {
   AfterChangeHook,
   BeforeChangeHook,
 } from 'payload/dist/collections/config/types'
-import { PRODUCT_CATEGORIES } from '../../config'
+import { PRODUCT_CATEGORIES, PRODUCT_SUB_CATEGORIES } from '../../config'
 import { Access, CollectionConfig } from 'payload/types'
 import { Product, User } from '../../payload-types'
-import { stripe } from '../../lib/stripe'
+// import { stripe } from '../../lib/stripe'
 
 const addUser: BeforeChangeHook<Product> = async ({
   req,
@@ -83,6 +83,7 @@ export const Products: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
   },
+  labels:{singular:'Product',plural:'Products'},
   access: {
     read: isAdminOrHasAccess(),
     update: isAdminOrHasAccess(),
@@ -92,44 +93,44 @@ export const Products: CollectionConfig = {
     afterChange: [syncUser],
     beforeChange: [
       addUser,
-      async (args) => {
-        if (args.operation === 'create') {
-          const data = args.data as Product
+      // async (args) => {
+      //   if (args.operation === 'create') {
+      //     const data = args.data as Product
 
-          const createdProduct =
-            await stripe.products.create({
-              name: data.name,
-              default_price_data: {
-                currency: 'USD',
-                unit_amount: Math.round(data.price * 100),
-              },
-            })
+      //     const createdProduct =
+      //       await stripe.products.create({
+      //         name: data.name,
+      //         default_price_data: {
+      //           currency: 'USD',
+      //           unit_amount: Math.round(data.price * 100),
+      //         },
+      //       })
 
-          const updated: Product = {
-            ...data,
-            stripeId: createdProduct.id,
-            priceId: createdProduct.default_price as string,
-          }
+      //     const updated: Product = {
+      //       ...data,
+      //       stripeId: createdProduct.id,
+      //       priceId: createdProduct.default_price as string,
+      //     }
 
-          return updated
-        } else if (args.operation === 'update') {
-          const data = args.data as Product
+      //     return updated
+      //   } else if (args.operation === 'update') {
+      //     const data = args.data as Product
 
-          const updatedProduct =
-            await stripe.products.update(data.stripeId!, {
-              name: data.name,
-              default_price: data.priceId!,
-            })
+      //     const updatedProduct =
+      //       await stripe.products.update(data.stripeId!, {
+      //         name: data.name,
+      //         default_price: data.priceId!,
+      //       })
 
-          const updated: Product = {
-            ...data,
-            stripeId: updatedProduct.id,
-            priceId: updatedProduct.default_price as string,
-          }
+      //     const updated: Product = {
+      //       ...data,
+      //       stripeId: updatedProduct.id,
+      //       priceId: updatedProduct.default_price as string,
+      //     }
 
-          return updated
-        }
-      },
+      //     return updated
+      //   }
+      // },
     ],
   },
   fields: [
@@ -156,10 +157,29 @@ export const Products: CollectionConfig = {
     },
     {
       name: 'price',
-      label: 'Price in USD',
+      label: 'Price in INR',
       min: 0,
-      max: 1000,
       type: 'number',
+      required: true,
+    },
+    {
+      name: 'avg_rating',
+      label: 'Avg Rating',
+      type: 'number',
+      defaultValue: 0,
+      admin:{
+        condition: () => false,
+      }
+    },
+    {
+      name: 'have_varient',
+      label: 'Have Varients?',
+      type: 'radio',
+      options: [
+        { label: 'Yes', value: 'yes' },
+        { label: 'No', value: 'no' },
+      ],
+      defaultValue:'no',
       required: true,
     },
     {
@@ -172,12 +192,28 @@ export const Products: CollectionConfig = {
       required: true,
     },
     {
-      name: 'product_files',
-      label: 'Product file(s)',
-      type: 'relationship',
+      name: 'subcategory',
+      label: 'Sub Category',
+      type: 'select',
+      hasMany:true,
+      options: PRODUCT_SUB_CATEGORIES.map(
+        ({ label, value }) => ({ label, value })
+      ),
       required: true,
-      relationTo: 'product_files',
-      hasMany: false,
+    },
+    {
+      name: 'size',
+      label: 'Size in Ft/In seperate with "X"',
+      type: 'text',
+      required: true,
+    },
+    {
+      name: 'unit',
+      label: 'Unit',
+      type: 'select',
+      hasMany:false,
+      options: [{label: 'Feet', value:'ft'}, {label: 'Inch', value:'inch'}],
+      required: true,
     },
     {
       name: 'approvedForSale',
@@ -204,30 +240,37 @@ export const Products: CollectionConfig = {
         },
       ],
     },
-    {
-      name: 'priceId',
-      access: {
-        create: () => false,
-        read: () => false,
-        update: () => false,
-      },
-      type: 'text',
-      admin: {
-        hidden: true,
-      },
-    },
-    {
-      name: 'stripeId',
-      access: {
-        create: () => false,
-        read: () => false,
-        update: () => false,
-      },
-      type: 'text',
-      admin: {
-        hidden: true,
-      },
-    },
+    // {
+    //   name: 'priceId',
+    //   access: {
+    //     create: () => false,
+    //     read: () => false,
+    //     update: () => false,
+    //   },
+    //   type: 'text',
+    //   admin: {
+    //     hidden: true,
+    //   },
+    // },
+    // {
+    //   name: 'stripeId',
+    //   access: {
+    //     create: () => false,
+    //     read: () => false,
+    //     update: () => false,
+    //   },
+    //   type: 'text',
+    //   admin: {
+    //     hidden: true,
+    //   },
+    // },
+    // {
+    //   name: 'product_offer',
+    //   label: 'Product Offer',
+    //   type: 'relationship',
+    //   relationTo: 'product_offer',
+    //   hasMany: true,
+    // },
     {
       name: 'images',
       type: 'array',

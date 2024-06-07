@@ -45,15 +45,22 @@ export const Users: CollectionConfig = {
       relationTo: 'products',
       hasMany: true,
     },
+    // {
+    //   name: 'product_offer',
+    //   label: 'Product Offer',
+    //   admin: {
+    //     condition: () => false,
+    //   },
+    //   type: 'relationship',
+    //   relationTo: 'product_offer',
+    //   hasMany: true,
+    // },
     {
-      name: 'product_files',
-      label: 'Product files',
-      admin: {
-        condition: () => false,
-      },
-      type: 'relationship',
-      relationTo: 'product_files',
-      hasMany: true,
+      name: 'phone',
+      label: 'Phone',
+      type: 'number',
+      hasMany: false,
+      required: true,
     },
     {
       name: 'role',
