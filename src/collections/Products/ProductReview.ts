@@ -5,7 +5,6 @@
 //   import { PRODUCT_CATEGORIES, PRODUCT_SUB_CATEGORIES } from '../../config'
 //   import { Access, CollectionConfig } from 'payload/types'
 //   import { Product, User } from '../../payload-types'
-//   // import { stripe } from '../../lib/stripe'
   
 //   const addUser: BeforeChangeHook<Product> = async ({
 //     req,
