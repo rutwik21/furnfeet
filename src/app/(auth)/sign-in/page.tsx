@@ -14,12 +14,11 @@ import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 
 import {
-  AuthCredentialsValidator,
-  TAuthCredentialsValidator,
+  LoginAuthCredentialsValidator,
+  TLoginAuthCredentialsValidator,
 } from '@/lib/validators/account-credentials-validator'
 import { trpc } from '@/trpc/client'
 import { toast } from 'sonner'
-import { ZodError } from 'zod'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 
@@ -41,8 +40,8 @@ const Page = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<TAuthCredentialsValidator>({
-    resolver: zodResolver(AuthCredentialsValidator),
+  } = useForm<TLoginAuthCredentialsValidator>({
+    resolver: zodResolver(LoginAuthCredentialsValidator),
   })
 
   const { mutate: signIn, isLoading } =
@@ -74,7 +73,7 @@ const Page = () => {
   const onSubmit = ({
     email,
     password,
-  }: TAuthCredentialsValidator) => {
+  }: TLoginAuthCredentialsValidator) => {
     signIn({ email, password })
   }
 

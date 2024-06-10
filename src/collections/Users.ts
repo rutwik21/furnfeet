@@ -14,7 +14,8 @@ const adminsAndUser: Access = ({ req: { user } }) => {
 export const Users: CollectionConfig = {
   slug: 'users',
   auth: {
-    verify: {
+    verify:
+    {
       generateEmailHTML: ({ token }) => {
         return PrimaryActionEmailHtml({
           actionLabel: "verify your account",

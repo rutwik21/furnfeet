@@ -67,6 +67,7 @@ const Page = () => {
     phone,
     password,
   }: TAuthCredentialsValidator) => {
+    phone = Number(phone);
     mutate({ email, phone, password })
   }
 
@@ -100,13 +101,30 @@ const Page = () => {
                     {...register('email')}
                     className={cn({
                       'focus-visible:ring-red-500':
-                        errors.email,
-                    })}
+                      errors.email,
+                      })}
                     placeholder='you@example.com'
                   />
                   {errors?.email && (
                     <p className='text-sm text-red-500'>
                       {errors.email.message}
+                    </p>
+                  )}
+                </div>
+                <div className='grid gap-1 py-2'>
+                  <Label htmlFor='phone'>Phone</Label>
+                  <Input 
+                    {...register('phone')}
+                    className={cn({
+                      'focus-visible:ring-red-500':
+                        errors.phone,
+                    })}
+                    placeholder='phone' 
+                    type='number'
+                  />
+                  {errors?.phone && (
+                    <p className='text-sm text-red-500'>
+                      {errors.phone.message}
                     </p>
                   )}
                 </div>

@@ -9,14 +9,24 @@ dotenv.config({
 })
 
 const transporter = nodemailer.createTransport({
-  host: 'smtp.resend.com',
-  secure: true,
-  port: 465,
+  host: "smtp-relay.brevo.com",
+  port: 587,
+  secure: false, // true for 465, false for other ports
   auth: {
-    user: 'resend',
-    pass: process.env.RESEND_API_KEY,
+    user: process.env.BREAVO_USER as string, // generated ethereal user
+    pass: process.env.BREAVO_API_KEY as string, // generated ethereal password
   },
-})
+});
+
+// nodemailer.createTransport({
+//   host: 'smtp.resend.com',
+//   secure: true,
+//   port: 465,
+//   auth: {
+//     user: 'resend',
+//     pass: process.env.RESEND_API_KEY,
+//   },
+// })
 
 let cached = (global as any).payload
 
@@ -46,8 +56,8 @@ export const getPayloadClient = async ({
     cached.promise = payload.init({
       email: {
         transport: transporter,
-        fromAddress: 'onboarding@resend.dev',
-        fromName: 'DigitalHippo',
+        fromAddress: process.env.BREAVO_USER as string,
+        fromName: 'FurnFeet',
       },
       secret: process.env.PAYLOAD_SECRET,
       local: initOptions?.express ? false : true,

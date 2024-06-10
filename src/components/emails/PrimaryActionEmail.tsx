@@ -34,7 +34,7 @@ export const EmailTemplate = ({
       <Body style={main}>
         <Container style={container}>
           <Img
-            src={`${process.env.NEXT_PUBLIC_SERVER_URL}/hippo-newsletter-sign-up.png`}
+            src={`${process.env.NEXT_PUBLIC_SERVER_URL}/furnfeet_email_image.png`}
             width='150'
             height='150'
             alt='FurnFeet'
@@ -43,7 +43,7 @@ export const EmailTemplate = ({
           <Text style={paragraph}>Hi there,</Text>
           <Text style={paragraph}>
             Welcome to FurnFeet, the marketplace for
-            high quality digital goods. Use the button below
+            high quality home furnishing and furniture goods. Use the button below
             to {actionLabel}.
           </Text>
           <Section style={btnContainer}>

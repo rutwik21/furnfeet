@@ -14,6 +14,7 @@ import SearchBar from './SearchBar'
 const Navbar = async () => {
   const nextCookies = cookies()
   const { user } = await getServerSideUser(nextCookies)
+  console.log(nextCookies, user);
 
   return (
     <div className='bg-white sticky z-50 top-0 inset-x-0 h-16'>

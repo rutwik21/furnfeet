@@ -1,4 +1,4 @@
-import { AuthCredentialsValidator } from '../lib/validators/account-credentials-validator'
+import { AuthCredentialsValidator, LoginAuthCredentialsValidator } from '../lib/validators/account-credentials-validator'
 import { publicProcedure, router } from './trpc'
 import { getPayloadClient } from '../get-payload'
 import { TRPCError } from '@trpc/server'
@@ -8,7 +8,8 @@ export const authRouter = router({
   createPayloadUser: publicProcedure
     .input(AuthCredentialsValidator)
     .mutation(async ({ input }) => {
-      const { email,phone, password } = input
+      let { email,phone, password } = input
+      phone = Number(phone)
       const payload = await getPayloadClient()
 
       // check if user already exists
@@ -56,7 +57,7 @@ export const authRouter = router({
     }),
 
   signIn: publicProcedure
-    .input(AuthCredentialsValidator)
+    .input(LoginAuthCredentialsValidator)
     .mutation(async ({ input, ctx }) => {
       const { email, password } = input
       const { res } = ctx
