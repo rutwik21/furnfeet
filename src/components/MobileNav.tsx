@@ -82,12 +82,12 @@ const MobileNav = () => {
                           key={item.name}
                           className='group relative text-sm'>
                           <div className='relative aspect-square overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75'>
-                            <Image
+                            {/* <Image
                               fill
                               src={item.imageSrc}
                               alt='product category image'
                               className='object-cover object-center'
-                            />
+                            /> */}
                           </div>
                           <Link
                             href={item.href}

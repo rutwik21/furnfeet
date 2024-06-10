@@ -12,18 +12,18 @@ export interface Config {
     products: Product;
     media: Media;
     orders: Order;
-    product_offer: ProductOffer;
-    product_varient: ProductVarient;
-    product_review: ProductReview;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
   globals: {};
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
 export interface User {
   id: string;
   products?: (string | Product)[] | null;
-  product_offer?: (string | ProductOffer)[] | null;
   phone: number;
   role: 'admin' | 'user';
   updatedAt: string;
@@ -39,6 +39,10 @@ export interface User {
   lockUntil?: string | null;
   password: string | null;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
 export interface Product {
   id: string;
   user?: (string | null) | User;
@@ -129,7 +133,6 @@ export interface Product {
   size: string;
   unit: 'ft' | 'inch';
   approvedForSale?: ('pending' | 'approved' | 'denied') | null;
-  product_offer?: (string | ProductOffer)[] | null;
   images: {
     image: string | Media;
     id?: string | null;
@@ -137,16 +140,10 @@ export interface Product {
   updatedAt: string;
   createdAt: string;
 }
-export interface ProductOffer {
-  id: string;
-  user?: (string | null) | User;
-  coupon_code: string;
-  min_order_value: number;
-  start_date: string;
-  end_date: string;
-  updatedAt: string;
-  createdAt: string;
-}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
 export interface Media {
   id: string;
   user?: (string | null) | User;
@@ -158,6 +155,8 @@ export interface Media {
   filesize?: number | null;
   width?: number | null;
   height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
   sizes?: {
     thumbnail?: {
       url?: string | null;
@@ -185,6 +184,10 @@ export interface Media {
     };
   };
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders".
+ */
 export interface Order {
   id: string;
   _isPaid: boolean;
@@ -193,24 +196,10 @@ export interface Order {
   updatedAt: string;
   createdAt: string;
 }
-export interface ProductVarient {
-  id: string;
-  products: (string | Product)[];
-  color?: ('red' | 'green' | 'blue') | null;
-  size: string;
-  unit: 'ft' | 'in';
-  updatedAt: string;
-  createdAt: string;
-}
-export interface ProductReview {
-  id: string;
-  user?: (string | null) | User;
-  products?: (string | null) | Product;
-  rating: number;
-  rewiew?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-preferences".
+ */
 export interface PayloadPreference {
   id: string;
   user: {
@@ -230,6 +219,10 @@ export interface PayloadPreference {
   updatedAt: string;
   createdAt: string;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-migrations".
+ */
 export interface PayloadMigration {
   id: string;
   name?: string | null;
