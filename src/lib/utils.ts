@@ -13,12 +13,12 @@ export function formatPrice(
     notation?: Intl.NumberFormatOptions['notation']
   } = {}
 ) {
-  const { currency = 'INR', notation = 'compact' } = options
+  const { currency = 'INR', notation = 'standard' } = options
 
   const numericPrice =
     typeof price === 'string' ? parseFloat(price) : price
 
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency,
     notation,
@@ -59,7 +59,7 @@ export function constructMetadata({
       creator: '@kashid_rut85835',
     },
     icons,
-    metadataBase: new URL('https://furnfeet.in'),
+    metadataBase: new URL('https://furnfeet.com'),
     ...(noIndex && {
       robots: {
         index: false,
