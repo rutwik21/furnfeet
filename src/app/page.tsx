@@ -5,7 +5,7 @@ import {
   buttonVariants,
 } from '@/components/ui/button'
 import {
-  ArrowDownToLine,
+  Truck,
   CheckCircle,
   Leaf,
 } from 'lucide-react'
@@ -13,10 +13,10 @@ import Link from 'next/link'
 
 const perks = [
   {
-    name: 'Instant Delivery',
-    Icon: ArrowDownToLine,
+    name: 'Fastest Delivery',
+    Icon: Truck,
     description:
-      'Get your assets delivered to your email in seconds and download them right away.',
+      'Get your products delivered to your home fastest way possible.',
   },
   {
     name: 'Guaranteed Quality',
