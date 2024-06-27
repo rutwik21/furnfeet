@@ -191,6 +191,7 @@ export interface Media {
 export interface Order {
   id: string;
   _isPaid: boolean;
+  orderId: string;
   user: string | User;
   products: (string | Product)[];
   updatedAt: string;

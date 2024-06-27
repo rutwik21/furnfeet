@@ -24,24 +24,20 @@ const ThankYouPage = async ({
   const { user } = await getServerSideUser(nextCookies)
   const payload = await getPayloadClient()
 
-  const { docs: orders } = await payload.find({
+  const { docs: orders }= await payload.find({
     collection: 'orders',
     depth: 2,
     where: {
-      id: {
+      orderId: {
         equals: orderId,
       },
     },
   })
 
-  const [order] = orders
-
+  const [order] = orders 
   if (!order) return notFound()
-
-  const orderUserId =
-    typeof order.user === 'string'
-      ? order.user
-      : order.user.id
+    
+const orderUserId = typeof order.user === 'string' ? order.user : (order.user as User).id
 
   if (orderUserId !== user?.id) {
     return redirect(
@@ -82,7 +78,7 @@ const ThankYouPage = async ({
                 your receipt and order details to{' '}
                 {typeof order.user !== 'string' ? (
                   <span className='font-medium text-gray-900'>
-                    {order.user.email}
+                    {(order.user as User).email}
                   </span>
                 ) : null}
                 .
@@ -188,9 +184,9 @@ const ThankYouPage = async ({
               </div>
 
               <PaymentStatus
-                isPaid={order._isPaid}
+                isPaid={order._isPaid as boolean}
                 orderEmail={(order.user as User).email}
-                orderId={order.id}
+                orderId={order.id as string}
               />
 
               <div className='mt-16 border-t border-gray-200 py-6 text-right'>

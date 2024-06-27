@@ -12,6 +12,10 @@ const nextConfig = {
 			},
 		],
 	},
+	env:{
+		RAZORPAY_KEY_ID:'rzp_test_y4wOGu5Ja28zmB',
+		RAZORPAY_KEY_SECRET:'xwv3IgLyNOk2CaPsHdPZ9Nsx'
+	}
 };
 
 module.exports = nextConfig;

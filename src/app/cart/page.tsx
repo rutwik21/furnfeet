@@ -10,18 +10,42 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 const Page = () => {
   const { items, removeItem } = useCart()
 
   const router = useRouter()
 
-  // const { mutate: createCheckoutSession, isLoading } =
-  //   trpc.payment.createSession.useMutation({
-  //     onSuccess: ({ url }) => {
-  //       if (url) router.push(url)
-  //     },
-  //   })
+  const { mutate: createCheckoutSession, isLoading } =
+    trpc.payment.createSession.useMutation({
+      onSuccess: ({ orderId, key_id }) => {
+        if (orderId && key_id) {
+
+          const options = {
+            "key" : key_id,
+            "order_id" : orderId, 
+            "name": "furnfeet",
+            "description": "Test Transaction",
+            "handler": function (response: any){
+              router.push(`${process.env.NEXT_PUBLIC_SERVER_URL}/thank-you?orderId=${orderId}`)
+            },
+            "image": `https://furnfeet.s3.ap-south-1.amazonaws.com/ff_logo.png`,
+            "theme": {
+                "color": "#f97316"
+            }
+          };
+          //@ts-ignore
+          const rzp1 =new window.Razorpay(options);
+          rzp1.on("payment.failed", function(response: any) {
+            toast.error(response.error.reason);
+          })
+          rzp1.open();
+        }else{
+          alert('something went wrong');
+        }
+      },
+    })
 
   const productIds = items.map(({ product }) => product.id)
 
@@ -39,6 +63,7 @@ const Page = () => {
 
   return (
     <div className='bg-white'>
+      <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
       <div className='mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8'>
         <h1 className='text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>
           Shopping Cart
@@ -210,20 +235,7 @@ const Page = () => {
             <div className='mt-6'>
               <Button
                 disabled={items.length === 0 }
-                onClick={() => {}
-                  // createCheckoutSession({ productIds })
-                }
-                className='w-full'
-                size='lg'>
-                {/* {isLoading ? (
-                  <Loader2 className='w-4 h-4 animate-spin mr-1.5' />
-                ) : null
-                } */}
-                Checkout
-              </Button>
-              {/* <Button
-                disabled={items.length === 0 || isLoading}
-                onClick={() =>
+                onClick={() => 
                   createCheckoutSession({ productIds })
                 }
                 className='w-full'
@@ -233,7 +245,7 @@ const Page = () => {
                 ) : null
                 }
                 Checkout
-              </Button> */}
+              </Button>
             </div>
           </section>
         </div>

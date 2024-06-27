@@ -32,6 +32,20 @@ export const Orders: CollectionConfig = {
         create: () => false,
         update: () => false,
       },
+      defaultValue: false,
+      admin: {
+        hidden: true,
+      },
+      required: true,
+    },
+    {
+      name: 'orderId',
+      type: 'text',
+      access: {
+        create: () => false,
+        read: () => false,
+        update: () => false,
+      },
       admin: {
         hidden: true,
       },
