@@ -89,7 +89,7 @@ const Navbar = async () => {
             </div>
           </div>
           <div className='border-b border-gray-200 md:hidden lg:block'>
-            <div className='hidden z-50 lg:ml-8 lg:block lg:self-stretch'>
+            <div className='hidden z-40 lg:ml-8 lg:block lg:self-stretch'>
               <NavItems />
             </div>
             <div className='md:hidden p-2'>

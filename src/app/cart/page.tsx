@@ -30,7 +30,7 @@ const Page = () => {
             "handler": function (response: any){
               router.push(`${process.env.NEXT_PUBLIC_SERVER_URL}/thank-you?orderId=${orderId}`)
             },
-            "image": `https://furnfeet.s3.ap-south-1.amazonaws.com/ff_logo.png`,
+            "image": `https://furnfeettest.s3.eu-north-1.amazonaws.com/ff_logo.png`,
             "theme": {
                 "color": "#f97316"
             }
