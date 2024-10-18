@@ -33,7 +33,7 @@ const SearchBar = ({className}:{className?: string}) => {
     setSearchOutput([]);
   }
   return (
-    <div className='z-50 relative'>
+    <div className='z-30 md:z-50 relative'>
         <Input ref={inputText} placeholder='Search' onChange={($event)=>(handleSearchInput($event.target.value))} className={className?className:''} />
         <div className={cn(' hidden border max-h-[50svh] w-full scrollable-content overflow-x-hidden bg-white absolute top-14 py-2',{'block': searchOutput.length>0})}>
             {searchOutput.map((products,i)=>{

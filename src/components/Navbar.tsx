@@ -17,7 +17,7 @@ const Navbar = async () => {
   console.log(nextCookies, user);
 
   return (
-    <div className='bg-white sticky z-50 top-0 inset-x-0 h-16'>
+    <div className='bg-white sticky z-30 md:z-50 top-0 inset-x-0 h-16'>
       <header className='relative bg-white'>
         <MaxWidthWrapper>
           <div className='border-b border-gray-200'>
