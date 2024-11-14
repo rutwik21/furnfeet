@@ -71,3 +71,15 @@
   background: white !important;
   scale: 1 !important ;
 }
+
+.scrollable-content {
+  overflow-y: scroll;
+  scrollbar-color: #e0e0e0 #ffffff00;
+  scrollbar-width:thin;
+}
+
+.scrollable-content::-webkit-scrollbar {
+  display: none;
+  width: 0px;
+  background: transparent;
+}
