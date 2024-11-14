@@ -72,7 +72,17 @@ export const Users: CollectionConfig = {
       options: [
         { label: 'Admin', value: 'admin' },
         { label: 'User', value: 'user' },
+        { label: 'Architect', value: 'architect' },
+        { label: 'Interior Designer', value: 'interiorDesigner' },
+        { label: 'Karagir', value: 'karagir' },
       ],
+    },
+    {
+      name: 'referedBy',
+      label: 'Refered By',
+      type: 'relationship',
+      relationTo:'users',
+      hasMany: false,
     },
   ],
 }

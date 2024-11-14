@@ -13,7 +13,8 @@ import SearchBar from './SearchBar'
 
 const Navbar = async () => {
   const nextCookies = cookies()
-  const { user } = await getServerSideUser(nextCookies)
+  const { user } = await getServerSideUser(nextCookies);
+  
   console.log(nextCookies, user);
 
   return (

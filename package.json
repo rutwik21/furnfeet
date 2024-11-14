@@ -60,6 +60,7 @@
     "swiper": "^11.1.4",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
+    "ts-node": "^10.9.2",
     "yarn": "^1.22.22",
     "zod": "^3.23.8",
     "zustand": "^4.5.2"
