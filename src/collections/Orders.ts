@@ -61,11 +61,89 @@ export const Orders: CollectionConfig = {
       required: true,
     },
     {
-      name: 'products',
+      name: 'address',
       type: 'relationship',
-      relationTo: 'products',
+      relationTo: 'addresses',
       required: true,
-      hasMany: true,
+      hasMany: false,
+    },
+    {
+      name: 'razorpayOrderId',
+      type: 'text',
+    },
+    {
+      name: 'razorpayPaymentId',
+      type: 'text',
+    },
+    {
+      name: 'status',
+      type: 'text',
+    },
+    {
+      name: 'paymentMode',
+      type: 'text',
+    },
+    {
+      name: 'totalOrderValue',
+      type: 'number',
+      required: true,
+    },
+    {
+      name: 'data',
+      type: 'array',
+      fields:[
+        {
+          name: "productId",
+          type:"relationship",
+          relationTo:"products",
+          required: true,
+          hasMany: false
+        },
+        {
+          name: "dimensions",
+          type:"array",
+          fields:[
+            {
+              name: "length",
+              type:"number",
+              hasMany: false,
+              required: true
+            },
+            {
+              name: "width",
+              type:"number",
+              hasMany: false,
+              required: true
+            },
+            {
+              name: "height",
+              type:"number",
+              hasMany: false,
+              required: false
+            },
+            {
+              name: "unit",
+              type: 'select',
+              options: [{label: 'Inch', value:'inch'}],
+              hasMany: false,
+              required: true
+            },
+          ]
+        },
+        {
+          name: "qty",
+          type:"number",
+          hasMany: false,
+          defaultValue: 1
+        },
+        {
+          name: "price",
+          type:"number",
+          hasMany: false,
+          required: true
+        },
+      ],
+      required: true,
     },
   ],
 }

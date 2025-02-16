@@ -8,40 +8,43 @@ import { TRPCError } from '@trpc/server'
 import { getPayloadClient } from '../get-payload'
 // import { stripe } from '../lib/stripe'
 // import type Stripe from 'stripe'
-import { razorpayInstance } from '../lib/razorpay'
+import { razorpayInstance, RezorpaySuccessResponseValidator } from '../lib/razorpay'
+import { Address } from '@/payload-types'
 
 export const paymentRouter = router({
   createSession: privateProcedure
-    .input(z.object({ productIds: z.array(z.string()) }))
+    .input( z.array(z.object({
+      productId: z.string(),
+      qty: z.number().int(),
+      dimensions: z.array(z.object({
+          length: z.number(),
+          width: z.number(),
+          height: z.number().nullable().optional(),
+          unit: z.literal("inch"),
+          id: z.string().nullable().optional(),
+      })),
+      price: z.number(),
+      totalPrice: z.number(),
+    })))
     .mutation(async ({ ctx, input }) => {
       const { user } = ctx
-      let { productIds } = input
-
-      if (productIds.length === 0) {
+      
+      if (input.length === 0) {
         throw new TRPCError({ code: 'BAD_REQUEST' })
       }
 
       const payload = await getPayloadClient()
 
-      const { docs: products } = await payload.find({
-        collection: 'products',
-        where: {
-          id: {
-            in: productIds,
-          },
-        },
-      })
-
-      const filteredProducts = products.filter((prod) =>
-        Boolean(prod.price)
-      )
-
-      const priceArray = filteredProducts.map((prod) => prod.price);
-      let totalCartPrice:number = 0;
+      const priceArray = input.map(({totalPrice}) => (totalPrice));
+      let totalCartPrice:number = 10;
       priceArray.forEach((price) =>{
         totalCartPrice = totalCartPrice + Number(price)
       });
 
+      const data = input.map((productDetails)=>{
+        return {productId: productDetails.productId , qty: productDetails.qty, 
+          dimensions: productDetails.dimensions, price: productDetails.totalPrice}
+      })
       try {
         const options = {
           amount: totalCartPrice + '00',  // amount in the smallest currency unit
@@ -52,12 +55,27 @@ export const paymentRouter = router({
           if(err){
             throw new TRPCError({ code: 'BAD_REQUEST' })
           }
+          const {docs: defaultAddress} = await payload.find({
+            collection: 'addresses',
+            where:{
+              user:{
+                equals: user.id
+              },
+              isDefaultAddress: {
+                equals: true
+              }
+            },
+            limit: 1
+          });
+
           await payload.create({
             collection: 'orders',
             data: {
               _isPaid: false,
               orderId: order.id,
-              products: filteredProducts.map((prod) => prod.id) as string[],
+              address: (defaultAddress as unknown as Address[] )[0].id,
+              data: data,
+              totalOrderValue: totalCartPrice,
               user: user.id,
             },
           })
@@ -70,6 +88,38 @@ export const paymentRouter = router({
 
       } catch (err) {
         return { key_id : null, orderId : null };
+      }
+    }),
+  
+  markOrderAsPaid: privateProcedure
+    .input(RezorpaySuccessResponseValidator)
+    .mutation(async ({ ctx, input }) => {
+      const { user } = ctx
+      try {
+        if (!input.orderId || !input.razorpay_order_id) {
+          throw new TRPCError({ code: 'BAD_REQUEST' })
+        }
+
+        const payload = await getPayloadClient()
+        await payload.update({
+          collection: 'orders',
+          data: {
+            _isPaid: true,
+            razorpayPaymentId: input.razorpay_payment_id
+          },
+          where:{
+            orderId:{
+              equals: input.orderId
+            },
+            user:{
+              equals: user.id
+            }
+          }
+        });
+        return input.orderId;
+      } 
+      catch (error) {
+        return null;
       }
     }),
 

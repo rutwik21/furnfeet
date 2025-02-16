@@ -1,8 +1,10 @@
 'use client'
 
+import ConfirmAddress from '@/components/ConfirmAddress'
 import { Button } from '@/components/ui/button'
 import { PRODUCT_CATEGORIES } from '@/config'
 import { useCart } from '@/hooks/use-cart'
+import { TRezorpaySuccessResponseValidator } from '@/lib/razorpay'
 import { cn, formatPrice } from '@/lib/utils'
 import { trpc } from '@/trpc/client'
 import { Check, Loader2, X } from 'lucide-react'
@@ -13,41 +15,64 @@ import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 const Page = () => {
-  const { items, removeItem } = useCart()
-
+  const { items, removeItem, reduceItem, addItem, clearCart } = useCart()
+  const [ confirmAddress, setConfirmAddress ] = useState(false);
+  const [addressConfirmed, setaddressConfirmed] = useState(false);
   const router = useRouter()
+
+  const handleAddressConfirmation = (data: boolean)=>{
+    setaddressConfirmed(data);
+  }
+
+  const {mutate: markOrderAsPaid}=
+  trpc.payment.markOrderAsPaid.useMutation({
+    onError:(err)=>{
+      console.log(err);
+      toast.error("Something went wrong! Please reach out to us if you faced some issue while payment");
+    },
+    onSuccess:(orderId)=>{
+      if(orderId){
+        clearCart();
+        router.push(`${process.env.NEXT_PUBLIC_SERVER_URL}/thank-you?orderId=${orderId}`)
+      }else{
+        toast.error("Something went wrong! Please reach out to us if you faced some issue while payment");
+      }
+    }
+  });
 
   const { mutate: createCheckoutSession, isLoading } =
     trpc.payment.createSession.useMutation({
       onSuccess: ({ orderId, key_id }) => {
         if (orderId && key_id) {
-
           const options = {
             "key" : key_id,
             "order_id" : orderId, 
             "name": "furnfeet",
             "description": "Test Transaction",
-            "handler": function (response: any){
-              router.push(`${process.env.NEXT_PUBLIC_SERVER_URL}/thank-you?orderId=${orderId}`)
+            "handler": function (response: TRezorpaySuccessResponseValidator){
+              response.orderId = orderId;
+              markOrderAsPaid(response);
             },
             "image": `https://furnfeettest.s3.eu-north-1.amazonaws.com/ff_logo.png`,
             "theme": {
                 "color": "#f97316"
             }
           };
-          //@ts-ignore
-          const rzp1 =new window.Razorpay(options);
+          
+          const rzp1 =new (window as any).Razorpay(options);
+          rzp1.open();
           rzp1.on("payment.failed", function(response: any) {
             toast.error(response.error.reason);
           })
-          rzp1.open();
         }else{
           alert('something went wrong');
         }
       },
     })
 
-  const productIds = items.map(({ product }) => product.id)
+  const products = items.map(({ product, qty, dimensions, price, totalPrice }) => {
+   return {productId: product.id, qty: qty, dimensions: dimensions, price: price, totalPrice: totalPrice }
+  })
 
   const [isMounted, setIsMounted] = useState<boolean>(false)
   useEffect(() => {
@@ -55,11 +80,17 @@ const Page = () => {
   }, [])
 
   const cartTotal = items.reduce(
-    (total, { product }) => total + product.price,
+    (total, { price, qty }) => { 
+      const finalPrice = typeof price != 'string'?price!:null
+      if(finalPrice){
+        return total + (finalPrice * qty)
+      }
+      return 0
+    },
     0
   )
 
-  const fee = 1
+  const fee = 10
 
   return (
     <div className='bg-white'>
@@ -74,7 +105,7 @@ const Page = () => {
             className={cn('lg:col-span-7', {
               'rounded-lg border-2 border-dashed border-zinc-200 p-12':
                 isMounted && items.length === 0,
-            })}>
+            },{"hidden": confirmAddress})}>
             <h2 className='sr-only'>
               Items in your shopping cart
             </h2>
@@ -106,16 +137,16 @@ const Page = () => {
                   isMounted && items.length > 0,
               })}>
               {isMounted &&
-                items.map(({ product }) => {
+                items.map((cartItem) => {
                   const label = PRODUCT_CATEGORIES.find(
-                    (c) => c.value === product.category
+                    (c) => c.value === cartItem.product.category
                   )?.label
 
-                  const { image } = product.images[0]
+                  const { image } = cartItem.product.images[0]
 
                   return (
                     <li
-                      key={product.id}
+                      key={cartItem.product.id}
                       className='flex py-6 sm:py-10'>
                       <div className='flex-shrink-0'>
                         <div className='relative h-24 w-24'>
@@ -137,9 +168,9 @@ const Page = () => {
                             <div className='flex justify-between'>
                               <h3 className='text-sm'>
                                 <Link
-                                  href={`/product/${product.id}`}
+                                  href={`/product/${cartItem.product.id}`}
                                   className='font-medium text-gray-700 hover:text-gray-800'>
-                                  {product.name}
+                                  {cartItem.product.name}
                                 </Link>
                               </h3>
                             </div>
@@ -150,8 +181,32 @@ const Page = () => {
                               </p>
                             </div>
 
+                            <div className='mt-1 gap-2 flex text-sm'>
+                              <p className='text-muted-foreground'>
+                                Qty: 
+                              </p>
+                                <div className='flex gap-2 px-2 bg-gray-50 rounded-sm  text-sm'>
+                                  <button
+                                    onClick={() => reduceItem(cartItem.product)}
+                                    className='flex self-center'>
+                                    -
+                                  </button>
+                                  <p>{cartItem.qty}</p>
+                                  <button
+                                    onClick={() => addItem(cartItem)}
+                                    className='flex self-center'>
+                                    +
+                                  </button>
+                                </div>
+                            </div>
+                            
+
                             <p className='mt-1 text-sm font-medium text-gray-900'>
-                              {formatPrice(product.price)}
+                            {
+                              typeof cartItem.price != 'string'?
+                              formatPrice(cartItem.price! * cartItem.qty)
+                              :null
+                            }
                             </p>
                           </div>
 
@@ -160,7 +215,7 @@ const Page = () => {
                               <Button
                                 aria-label='remove product'
                                 onClick={() =>
-                                  removeItem(product.id)
+                                  removeItem(cartItem.product.id)
                                 }
                                 variant='ghost'>
                                 <X
@@ -184,6 +239,13 @@ const Page = () => {
                   )
                 })}
             </ul>
+          </div>
+          <div
+            className={cn('lg:col-span-7', {
+              'rounded-lg border-2 border-dashed border-zinc-200 p-12':
+                isMounted && items.length === 0,
+            },{"hidden": !confirmAddress})}>
+              <ConfirmAddress handleAddressConfirmation={handleAddressConfirmation} />
           </div>
 
           <section className='mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8'>
@@ -233,19 +295,34 @@ const Page = () => {
             </div>
 
             <div className='mt-6'>
-              <Button
-                disabled={items.length === 0 }
-                onClick={() => 
-                  createCheckoutSession({ productIds })
-                }
-                className='w-full'
-                size='lg'>
-                {isLoading ? (
-                  <Loader2 className='w-4 h-4 animate-spin mr-1.5' />
-                ) : null
-                }
-                Checkout
-              </Button>
+              {
+                confirmAddress?
+                  <Button
+                    disabled={items.length === 0 || (confirmAddress && !addressConfirmed) || cartTotal === 0}
+                    onClick={() => 
+                      createCheckoutSession( products )
+                    }
+                    className='w-full'
+                    size='lg'>
+                    {isLoading ? (
+                      <Loader2 className='w-4 h-4 animate-spin mr-1.5' />
+                    ) : null
+                    }
+                    Make Payment
+                  </Button>
+                :
+                  <Button
+                    disabled={items.length === 0 || cartTotal === 0}
+                    onClick={() => setConfirmAddress( true )}
+                    className='w-full'
+                    size='lg'>
+                    {isLoading ? (
+                      <Loader2 className='w-4 h-4 animate-spin mr-1.5' />
+                    ) : null
+                    }
+                    Checkout
+                  </Button>
+              }
             </div>
           </section>
         </div>

@@ -18,6 +18,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en' className='h-full'>
+      <head>
+        <script defer src="https://checkout.razorpay.com/v1/checkout.js"></script>
+      </head>
       <body
         className={cn(
           'relative h-full font-sans antialiased',
@@ -25,7 +28,10 @@ export default function RootLayout({
         )}>
         <main className='relative flex flex-col min-h-screen'>
           <Providers>
-            <Navbar />
+            {
+              //@ts-ignore
+              <Navbar />
+            }
             <div className='flex-grow flex-1'>
               {children}
             </div>

@@ -2,9 +2,10 @@ import {
   AfterChangeHook,
   BeforeChangeHook,
 } from 'payload/dist/collections/config/types'
-import { PRODUCT_CATEGORIES, PRODUCT_SUB_CATEGORIES } from '../../config'
+import { PRODUCT_CATEGORIES } from '../../config'
 import { Access, CollectionConfig } from 'payload/types'
 import { Product, User } from '../../payload-types'
+// import { CustomSelectComponent } from '../components/customSelect'
 // import { stripe } from '../../lib/stripe'
 
 const addUser: BeforeChangeHook<Product> = async ({
@@ -26,8 +27,7 @@ const syncUser: AfterChangeHook<Product> = async ({
   })
 
   if (fullUser && typeof fullUser === 'object') {
-    const { products } = fullUser
-
+    const { products } = fullUser as unknown as {products: Product[]}
     const allIDs = [
       ...(products?.map((product) =>
         typeof product === 'object' ? product.id : product
@@ -76,6 +76,52 @@ const isAdminOrHasAccess =
         in: userProductIDs,
       },
     }
+  }
+
+  function getMeSubCategories(){
+    let output:{label:string,value:string}[] = [];
+    PRODUCT_CATEGORIES.forEach(({featured}) => {
+      featured.forEach(({subCategories,name,value})=>{
+        const temp1 = [{label:name,value:value}];
+        const temp = subCategories.map(({name,value})=>({label:name,value:value}));
+        output = [...output, ...temp1, ...temp ];
+      })
+    })
+    return output;
+  }
+  function getMeRawMaterials(){
+
+    let output:{label:string,value:string}[] = [
+      {label: 'Height', value:'height'}, 
+      {label: 'Width', value:'width'},
+      {label: 'Length', value:'length'},
+    ];
+
+    PRODUCT_CATEGORIES.forEach(({featured, value}) => {
+      if(value === 'raw_materials'){
+        featured.forEach(({name,value})=>{
+          const temp1 = [{label:name,value:value}];
+          output = [...output, ...temp1];
+        })
+      }
+    })
+    return output;
+  }
+  function getMeFabricTypes(){
+
+    let output:{label:string,value:string}[] = [];
+
+    PRODUCT_CATEGORIES.forEach(({featured, value}) => {
+      if(value === 'raw_materials'){
+        featured.forEach(({value,subCategories})=>{
+          if(value==='fabric'){
+            const temp1 = subCategories.map(({name,value})=>({label:name,value:value}));
+            output = [...output, ...temp1];
+          }
+        })
+      }
+    })
+    return output;
   }
 
 export const Products: CollectionConfig = {
@@ -151,16 +197,14 @@ export const Products: CollectionConfig = {
       required: true,
     },
     {
+      name: 'brand',
+      label: 'Brand',
+      type: 'text',
+    },
+    {
       name: 'description',
       type: 'textarea',
       label: 'Product details',
-    },
-    {
-      name: 'price',
-      label: 'Price in INR',
-      min: 0,
-      type: 'number',
-      required: true,
     },
     {
       name: 'avg_rating',
@@ -171,48 +215,126 @@ export const Products: CollectionConfig = {
         condition: () => false,
       }
     },
+    // {
+    //   name: 'have_varient',
+    //   label: 'Have Varients?',
+    //   type: 'radio',
+    //   options: [
+    //     { label: 'Yes', value: 'yes' },
+    //     { label: 'No', value: 'no' },
+    //   ],
+    //   defaultValue:'no',
+    //   required: true,
+    // },
     {
-      name: 'have_varient',
-      label: 'Have Varients?',
-      type: 'radio',
-      options: [
-        { label: 'Yes', value: 'yes' },
-        { label: 'No', value: 'no' },
+      type:'row',
+      fields:[
+        {
+          name: 'category',
+          label: 'Category',
+          type: 'select',
+          options: PRODUCT_CATEGORIES.map(
+            ({ label, value }) => ({ label, value })
+          ),
+          required: true,
+        },
+        {
+          name: 'subcategory',
+          label: 'Sub Category',
+          type: 'select',
+          hasMany:true,
+          options: getMeSubCategories(),
+          required: true,
+        },
+
+      ]
+    },
+    {
+      type:'row',
+      fields:[
+        {
+          name: 'roomType',
+          label: 'Room Type',
+          type: 'select',
+          hasMany: true,
+          options: [
+            {label: 'Living Room', value:'living'}, 
+            {label: 'Bed Room', value:'bed'},
+            {label: 'Kitchen Room', value:'kitchen'},
+            {label: 'Bath Room', value:'bath'},
+          ],
+        },
+        {
+          name: 'firmness',
+          label: 'Firmness',
+          type: 'select',
+          hasMany: true,
+          options: [
+            {label: 'Hard', value:'hard'}, 
+            {label: 'Medium', value:'medium'},
+            {label: 'Soft', value:'soft'},
+            {label: 'Super Soft', value:'superSoft'},
+          ],
+        },
+        {
+          name: 'color',
+          label: 'Color',
+          type: 'text',
+        },
+        {
+          name: 'warranty',
+          label: 'Warranty In Months',
+          type: 'number',
+        },
+        
+      ]
+    },
+    {
+      name: 'dimensions',
+      type: 'array',
+      label: 'Specify Dimensions',
+      minRows: 1,
+      maxRows: 4,
+      fields: [
+        {
+          type:'row',
+          fields:[
+            {
+              name: 'length',
+              label: 'Length',
+              type: 'number',
+              required: true
+            },
+            {
+              name: 'width',
+              label: 'Width',
+              type: 'number',
+              required: true
+            },
+            {
+              name: 'height',
+              label: 'Height',
+              type: 'number',
+            },
+            {
+              name: 'unit',
+              label: 'Unit',
+              type: 'select',
+              hasMany:false,
+              options: [{label: 'Inch', value:'inch'}],
+              required: true,
+              defaultValue:"inch"
+            },
+          ]
+        },
       ],
-      defaultValue:'no',
-      required: true,
     },
     {
-      name: 'category',
-      label: 'Category',
-      type: 'select',
-      options: PRODUCT_CATEGORIES.map(
-        ({ label, value }) => ({ label, value })
-      ),
-      required: true,
-    },
-    {
-      name: 'subcategory',
-      label: 'Sub Category',
-      type: 'select',
-      hasMany:true,
-      options: PRODUCT_SUB_CATEGORIES.map(
-        ({ label, value }) => ({ label, value })
-      ),
-      required: true,
-    },
-    {
-      name: 'size',
-      label: 'Size in Ft/In seperate with "X"',
-      type: 'text',
-      required: true,
-    },
-    {
-      name: 'unit',
-      label: 'Unit',
-      type: 'select',
+      name: 'price',
+      label:'Price',
+      type:'relationship',
+      relationTo:'productPriceList',
       hasMany:false,
-      options: [{label: 'Feet', value:'ft'}, {label: 'Inch', value:'inch'}],
       required: true,
     },
     {

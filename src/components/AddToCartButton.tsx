@@ -2,13 +2,15 @@
 
 import { useEffect, useState } from 'react'
 import { Button } from './ui/button'
-import { useCart } from '@/hooks/use-cart'
+import { CartItem, useCart } from '@/hooks/use-cart'
 import { Product } from '@/payload-types'
 
 const AddToCartButton = ({
   product,
+  cartItem
 }: {
-  product: Product
+  product: Product,
+  cartItem: CartItem
 }) => {
   const { addItem } = useCart()
   const [isSuccess, setIsSuccess] = useState<boolean>(false)
@@ -24,7 +26,7 @@ const AddToCartButton = ({
   return (
     <Button
       onClick={() => {
-        addItem(product)
+        addItem(cartItem)
         setIsSuccess(true)
       }}
       size='lg'

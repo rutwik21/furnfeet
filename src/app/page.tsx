@@ -7,7 +7,7 @@ import {
 import {
   Truck,
   CheckCircle,
-  Leaf,
+  Settings,
 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -16,19 +16,19 @@ const perks = [
     name: 'Fastest Delivery',
     Icon: Truck,
     description:
-      'Get your products delivered to your home fastest way possible.',
+      'Get your products delivered to your home fastest way possible. As we only accept orders from the selected pincodes.',
   },
   {
     name: 'Guaranteed Quality',
     Icon: CheckCircle,
     description:
-      'Every asset on our platform is verified by our team to ensure our highest quality standards. Not happy? We offer a 30-day refund guarantee.',
+      'Every asset on our platform is verified by our team to ensure our highest quality standards.',
   },
   {
-    name: 'For the Planet',
-    Icon: Leaf,
+    name: 'Customised Furniture',
+    Icon: Settings,
     description:
-      "We've pledged 1% of sales to the preservation and restoration of the natural environment.",
+      "We offer customized furniture options according to your need.",
   },
 ]
 

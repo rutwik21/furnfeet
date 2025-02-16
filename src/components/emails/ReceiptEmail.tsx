@@ -35,7 +35,7 @@ export const ReceiptEmail = ({
   products,
 }: ReceiptEmailProps) => {
   const total =
-    products.reduce((acc, curr) => acc + curr.price, 0) + 1
+    products.reduce((acc, curr) => acc + (typeof curr.price != 'string'?curr.price.finalPrice!:0), 0) + 1
 
   return (
     <Html>
@@ -139,7 +139,7 @@ export const ReceiptEmail = ({
                   style={productPriceWrapper}
                   align='right'>
                   <Text style={productPrice}>
-                    {formatPrice(product.price)}
+                    {typeof product.price != 'string' ?formatPrice(product.price.finalPrice!) : null}
                   </Text>
                 </Column>
               </Section>

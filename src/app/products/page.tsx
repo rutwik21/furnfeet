@@ -23,7 +23,7 @@ const ProductsPage = ({
   )?.label
 
   return (
-    <MaxWidthWrapper>
+    <MaxWidthWrapper className='mt-5 md:mt-0'>
       <ProductReel
         title={label ?? 'Browse high-quality assets'}
         query={{

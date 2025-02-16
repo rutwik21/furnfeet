@@ -10,6 +10,8 @@ import { Media } from './collections/Media'
 import { Orders } from './collections/Orders'
 import { cloudStorage } from "@payloadcms/plugin-cloud-storage";
 import { s3Adapter } from "@payloadcms/plugin-cloud-storage/s3";
+import { Addresses } from './collections/Addresses'
+import { ProductPriceList } from './collections/Products/ProductPriceList'
 // import { ProductOffers } from './collections/Products/ProductOffer'
 // import { ProductVarient } from './collections/Products/ProductVarient'
 // import { ProductReview } from './collections/Products/ProductReview'
@@ -20,7 +22,7 @@ dotenv.config({
 
 export default buildConfig({
   serverURL: process.env.NEXT_PUBLIC_SERVER_URL || '',
-  collections: [Users, Products, Media, Orders,],
+  collections: [Users, Products, Media, Orders, Addresses, ProductPriceList],
   routes: {
     admin: '/sell',
   },

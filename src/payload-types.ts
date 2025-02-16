@@ -12,6 +12,8 @@ export interface Config {
     products: Product;
     media: Media;
     orders: Order;
+    addresses: Address;
+    productPriceList: ProductPriceList;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -25,7 +27,8 @@ export interface User {
   id: string;
   products?: (string | Product)[] | null;
   phone: number;
-  role: 'admin' | 'user';
+  role: 'admin' | 'user' | 'architect' | 'interiorDesigner' | 'karagir';
+  referedBy?: (string | null) | User;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -47,11 +50,10 @@ export interface Product {
   id: string;
   user?: (string | null) | User;
   name: string;
+  brand?: string | null;
   description?: string | null;
-  price: number;
   avg_rating?: number | null;
-  have_varient: 'yes' | 'no';
-  category: 'sofa_and_seating' | 'mattresses' | 'home_decor' | 'furnishings';
+  category: 'sofa_and_seating' | 'mattresses' | 'home_decor' | 'furnishings' | 'raw_materials';
   subcategory: (
     | 'sofa'
     | 'l_shape_sofa'
@@ -64,6 +66,7 @@ export interface Product {
     | '1_seat_recliner'
     | 'sofa_cum_bed'
     | 'bean_bag'
+    | ''
     | 'spring_mattresses'
     | 'pocket_spring_mattress'
     | 'bonnell_spring_mattress'
@@ -91,11 +94,6 @@ export interface Product {
     | 'artificial_plants'
     | 'artificial_flowers'
     | 'vertical_garden'
-    | 'wall_decor'
-    | 'wall_art'
-    | 'wall_hangings'
-    | 'wallpaper_for_wall'
-    | 'wall_stickers'
     | 'wall_decor'
     | 'wall_art'
     | 'wall_hangings'
@@ -129,14 +127,71 @@ export interface Product {
     | 'towels'
     | 'comforters'
     | 'door_mats'
+    | 'fabric'
+    | 'sofa_fabric'
+    | 'curtain_fabric'
+    | 'foam'
+    | '50Density'
+    | '40Density'
+    | '30Density'
   )[];
-  size: string;
-  unit: 'ft' | 'inch';
+  roomType?: ('living' | 'bed' | 'kitchen' | 'bath')[] | null;
+  firmness?: ('hard' | 'medium' | 'soft' | 'superSoft')[] | null;
+  color?: string | null;
+  warranty?: number | null;
+  dimensions?:
+    | {
+        length: number;
+        width: number;
+        height?: number | null;
+        unit: 'inch';
+        id?: string | null;
+      }[]
+    | null;
+  price: string | ProductPriceList;
   approvedForSale?: ('pending' | 'approved' | 'denied') | null;
   images: {
     image: string | Media;
     id?: string | null;
   }[];
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "productPriceList".
+ */
+export interface ProductPriceList {
+  isCustomizable?: boolean | null;
+  hasStandardSizes?: boolean | null;
+  id: string;
+  mrp: number;
+  unit: 'perSqFt' | 'perRunningFt' | 'perFt' | 'perMtr' | 'perSqMtr';
+  discount?: number | null;
+  finalPrice?: number | null;
+  whatIsCustomizable?: ('height' | 'width' | 'length' | 'fabric' | 'foam')[] | null;
+  fabricType?: ('sofa_fabric' | 'curtain_fabric') | null;
+  fabric?: (string | null) | Product;
+  maxFabricPrice?: number | null;
+  minLength?: number | null;
+  minWidth?: number | null;
+  minHeight?: number | null;
+  maxLength?: number | null;
+  maxWidth?: number | null;
+  maxHeight?: number | null;
+  customizedSizeMrp?: string | null;
+  customizedSizeUnit?: ('perSqFt' | 'perRunningFt' | 'perFt' | 'perMtr' | 'perSqMtr') | null;
+  customizedSizeFinalPrice?: number | null;
+  sizes?:
+    | {
+        length: number;
+        width: number;
+        height?: number | null;
+        mrp: number;
+        finalPrice?: number | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -193,7 +248,45 @@ export interface Order {
   _isPaid: boolean;
   orderId: string;
   user: string | User;
-  products: (string | Product)[];
+  address: string | Address;
+  razorpayOrderId?: string | null;
+  razorpayPaymentId?: string | null;
+  status?: string | null;
+  paymentMode?: string | null;
+  totalOrderValue: number;
+  data: {
+    productId: string | Product;
+    dimensions?:
+      | {
+          length: number;
+          width: number;
+          height?: number | null;
+          unit: 'inch';
+          id?: string | null;
+        }[]
+      | null;
+    qty?: number | null;
+    price: number;
+    id?: string | null;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "addresses".
+ */
+export interface Address {
+  id: string;
+  user?: (string | null) | User;
+  name: string;
+  contact: number;
+  addressLine1: string;
+  addressLine2?: string | null;
+  city: string;
+  state: string;
+  pinCode: string;
+  isDefaultAddress?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -234,5 +327,5 @@ export interface PayloadMigration {
 
 
 declare module 'payload' {
-  export interface GeneratedTypes extends Config {}
+  export interface GeneratedTypess extends Config {}
 }

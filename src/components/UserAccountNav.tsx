@@ -40,9 +40,16 @@ const UserAccountNav = ({ user }: { user: User }) => {
         </div>
 
         <DropdownMenuSeparator />
-
+        {
+          user.role == "admin"?
+          <DropdownMenuItem asChild>
+            <Link href='/sell'>Seller Dashboard</Link>
+          </DropdownMenuItem>
+          :null
+        }
+        
         <DropdownMenuItem asChild>
-          <Link href='/sell'>Seller Dashboard</Link>
+          <Link href='/orderHistory'>Order History</Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem

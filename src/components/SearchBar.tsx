@@ -1,26 +1,37 @@
 'use client'
-import { PRODUCT_CATEGORIES, PRODUCT_SUB_CATEGORIES } from '@/config'
+import { PRODUCT_CATEGORIES } from '@/config'
 import { Input } from './ui/input'
 import {useState, useRef, LegacyRef, RefObject, MutableRefObject, HTMLInputTypeAttribute} from 'react';
 import { cn } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
 
-interface Product { label:string, value: string};
+interface Product { label:string, value: string, href:string};
 
 const SearchBar = ({className}:{className?: string}) => {
 
+  const router = useRouter()
   const [searchOutput, setSearchOutput] = useState<Array<Product>>([])
 
   const inputText = useRef<any>('');
 
+  function getMeSubCategories(){
+    let output:{label:string,value:string, href:string}[] = [];
+    PRODUCT_CATEGORIES.forEach(({featured}) => {
+      featured.forEach(({subCategories,name,value, href})=>{
+        const temp1 = [{label:name,value:value, href: href}];
+        const temp = subCategories.map(({name,value,href})=>({label:name,value:value, href:href}));
+        output = [...output, ...temp1, ...temp ];
+      })
+    })
+    return output;
+  }
+  
   const handleSearchInput=(text:string)=>{
     if(text.length > 3){
       text = text.toLowerCase();
-      const a = PRODUCT_SUB_CATEGORIES.filter(obj=>(
+      const a = getMeSubCategories().filter(obj=>(
         (obj.label.toLowerCase()).includes(text)
       ));
-      if(a.length === 0){
-
-      }
       setSearchOutput(a);
     }
     else if(text.length === 0 && searchOutput.length > 0){
@@ -28,8 +39,9 @@ const SearchBar = ({className}:{className?: string}) => {
     }
   }
 
-  const handleSearchSelected = (value: string)=>{
-    inputText.current.value = value;
+  const handleSearchSelected = (value: Product)=>{
+    inputText.current.value = value.label;
+    router.replace(value.href);
     setSearchOutput([]);
   }
   return (
@@ -37,7 +49,8 @@ const SearchBar = ({className}:{className?: string}) => {
         <Input ref={inputText} placeholder='Search' onChange={($event)=>(handleSearchInput($event.target.value))} className={className?className:''} />
         <div className={cn(' hidden border max-h-[50svh] w-full scrollable-content overflow-x-hidden bg-white absolute top-14 py-2',{'block': searchOutput.length>0})}>
             {searchOutput.map((products,i)=>{
-              return <div onClick={()=>handleSearchSelected(products.label)} key={products.value} className={cn('hover:bg-gray-200 border-b px-5 py-1 cursor-pointer font-semibold',{
+              return <div onClick={()=>handleSearchSelected(products)} key={products.value} 
+              className={cn('hover:bg-gray-200 border-b px-5 py-1 cursor-pointer font-semibold',{
                 'border-b-0': i === searchOutput.length-1
               })}>
                 {products.label}

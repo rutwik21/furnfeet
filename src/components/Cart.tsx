@@ -29,8 +29,19 @@ const Cart = () => {
     setIsMounted(true)
   }, [])
 
+  // const cartTotal = items.reduce(
+  //   (total, { product, quantity }) => total + (product.price * quantity),
+  //   0
+  // )
+
   const cartTotal = items.reduce(
-    (total, { product }) => total + product.price,
+    (total, { price, qty }) => { 
+      const finalPrice = typeof price != 'string'?price!:null
+      if(finalPrice){
+        return total + (finalPrice * qty)
+      }
+      return 0
+    },
     0
   )
 
@@ -55,10 +66,10 @@ const Cart = () => {
           <>
             <div className='flex w-full flex-col pr-6'>
               <ScrollArea>
-                {items.map(({ product }) => (
+                {items.map((cartItem,i) => (
                   <CartItem
-                    product={product}
-                    key={product.id}
+                    cartItem={cartItem}
+                    key={i}
                   />
                 ))}
               </ScrollArea>

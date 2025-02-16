@@ -1,5 +1,6 @@
 'use client'
 
+import { Address } from '@/payload-types'
 import { trpc } from '@/trpc/client'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
@@ -8,12 +9,14 @@ interface PaymentStatusProps {
   orderEmail: string
   orderId: string
   isPaid: boolean
+  address: Address
 }
 
 const PaymentStatus = ({
   orderEmail,
   orderId,
   isPaid,
+  address
 }: PaymentStatusProps) => {
   const router = useRouter()
 
@@ -37,7 +40,11 @@ const PaymentStatus = ({
         <p className='font-medium text-gray-900'>
           Shipping To
         </p>
-        <p>{orderEmail}</p>
+        <p className='text-sm w-auto font-semibold text-gray-900'>{address.name}</p>
+        <p>{address.addressLine1}, {address.addressLine2}</p>
+        <p>{address.city}, {address.state} - {address.pinCode}</p>
+        <p className='text-sm w-auto font-semibold text-gray-900'>{address.contact}</p>
+        <p className='text-sm w-auto font-semibold text-gray-900'>{orderEmail}</p>
       </div>
 
       <div>

@@ -59,7 +59,11 @@ const ProductListing = ({
             {label}
           </p>
           <p className='mt-1 font-medium text-sm text-gray-900'>
-            {formatPrice(product.price)}
+            {
+              typeof product.price != 'string'?
+              formatPrice(product.price.finalPrice!)
+              :null
+            }
           </p>
         </div>
       </Link>
