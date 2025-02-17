@@ -1,0 +1,1 @@
+{"/_not-found":"/_not-found","/(auth)/sign-in/page":"/sign-in","/(auth)/sign-up/page":"/sign-up","/(auth)/verify-email/page":"/verify-email","/address/page":"/address","/cart/page":"/cart","/product/[productId]/page":"/product/[productId]","/api/trpc/[trpc]/route":"/api/trpc/[trpc]","/products/page":"/products","/page":"/","/thank-you/page":"/thank-you"}
