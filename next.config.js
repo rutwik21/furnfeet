@@ -8,7 +8,7 @@ const nextConfig = {
 			},
 			{
 				protocol: "https",
-				hostname: "furnfeet.up.railway.app",
+				hostname: "http://s0kkg0kk0oggs0kcko4go88k.82.29.161.80.sslip.io",
 			},
 		],
 	},
