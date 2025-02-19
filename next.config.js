@@ -7,6 +7,10 @@ const nextConfig = {
 				hostname: "localhost",
 			},
 			{
+				protocol: "http",
+				hostname: "s0kkg0kk0oggs0kcko4go88k.82.29.161.80.sslip.io",
+			},
+			{
 				protocol: "https",
 				hostname: "s0kkg0kk0oggs0kcko4go88k.82.29.161.80.sslip.io",
 			},
