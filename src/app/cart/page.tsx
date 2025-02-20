@@ -71,7 +71,7 @@ const Page = () => {
     })
 
   const products = items.map(({ product, qty, dimensions, price, totalPrice }) => {
-   return {productId: product.id, qty: qty, dimensions: dimensions, price: price, totalPrice: totalPrice }
+   return {productId: product.id, qty: qty, dimensions: dimensions, price: price, totalPrice: price*qty }
   })
 
   const [isMounted, setIsMounted] = useState<boolean>(false)

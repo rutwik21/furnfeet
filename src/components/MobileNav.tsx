@@ -81,14 +81,14 @@ const MobileNav = () => {
                         <div
                           key={i}
                           className='group relative text-sm'>
-                          <div className='relative aspect-square overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75'>
-                            {/* <Image
+                          {/* <div className='relative aspect-square overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75'>
+                            <Image
                               fill
                               src={item.imageSrc}
                               alt='product category image'
                               className='object-cover object-center'
-                            /> */}
-                          </div>
+                            />
+                          </div> */}
                           <Link
                             href={item.href}
                             className='mt-6 block font-medium text-gray-900'>
@@ -119,6 +119,7 @@ const MobileNav = () => {
                   Sign up
                 </Link>
               </div>
+
             </div>
           </div>
         </div>

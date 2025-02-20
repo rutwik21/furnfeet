@@ -29,8 +29,8 @@ function ProductPriceAndCart({product}:{product:Product}){
     dimensions:product.dimensions?product.dimensions:[],
     product: product,
     qty: 0,
-    price:price?.finalPrice!,
-    totalPrice:0
+    price:price.finalPrice!,
+    totalPrice:price.finalPrice!
   };
 
   return (
@@ -95,7 +95,7 @@ function ProductPriceAndCart({product}:{product:Product}){
       </div>
 
       <div >
-        <div className='mt-4 fixed bottom-4 left-4 right-4 z-50 md:static '>
+        <div className='mt-4 fixed bottom-4 left-4 right-4 z-10 md:static '>
           <AddToCartButton product={product} cartItem={cartItem} />
         </div>
       </div>
