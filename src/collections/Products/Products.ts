@@ -341,7 +341,7 @@ export const Products: CollectionConfig = {
       name: 'quantity',
       label: 'Quantity',
       type: 'number',
-      defaultValue: 'pending',
+      defaultValue: -1,
       required: true,
     },
     {
