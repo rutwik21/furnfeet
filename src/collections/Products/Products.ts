@@ -338,6 +338,13 @@ export const Products: CollectionConfig = {
       required: true,
     },
     {
+      name: 'quantity',
+      label: 'Quantity',
+      type: 'number',
+      defaultValue: 'pending',
+      required: true,
+    },
+    {
       name: 'approvedForSale',
       label: 'Product Status',
       type: 'select',
