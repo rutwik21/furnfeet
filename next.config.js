@@ -8,7 +8,7 @@ const nextConfig = {
 			},
 			{
 				protocol: "http",
-				hostname: "furnfeet.82.29.161.80.sslip.io",
+				hostname: "192.168.1.9",
 			},
 			{
 				protocol: "https",

@@ -1,27 +1,10 @@
+import { CartItem } from '@/lib/custom_interfaces'
 import { Product } from '@/payload-types'
 import { create } from 'zustand'
 import {
   createJSONStorage,
   persist,
 } from 'zustand/middleware'
-
-interface Dimensions {
-  length: number,
-  width: number,
-  height?: number | null | undefined,
-  unit: "inch",
-  id?: string | null | undefined
-}
-export type CartItem = {
-  isCustomized: boolean,
-  product:Product,
-  qty: number
-  dimensions: Dimensions[],
-  fabric?: string,
-  foam?: string,
-  price: number,
-  totalPrice: number
-}
 
 type CartState = {
   items: CartItem[]
@@ -40,7 +23,9 @@ export const useCart = create<CartState>()(
           let isProductInCart = false;
           state.items = state.items.map(i=>{
             if(i.product.id === cartItem.product.id){
-              i.qty = i.qty + 1;
+              if(!(i.product.quantity>0 && Number(i.qty + 1) > Number(i.product.quantity))){
+                i.qty = i.qty + 1;
+              }
               i.totalPrice = i.price * i.qty;
               isProductInCart = true
             }
@@ -49,8 +34,21 @@ export const useCart = create<CartState>()(
           if(isProductInCart){
             return {items: state.items}
           }
-          return { items: [...state.items, { product: cartItem.product, qty: cartItem.qty || 1,isCustomized:cartItem.isCustomized, dimensions:cartItem.dimensions, price: cartItem.price  , totalPrice: cartItem.price * cartItem.qty || 1}] }
+          return { items: [...state.items, { 
+            product: cartItem.product, 
+            qty: (cartItem.product.quantity > 0 && cartItem.qty > cartItem.product.quantity)? 
+                cartItem.product.quantity :cartItem.qty || 1,
+            isCustomized:cartItem.isCustomized, 
+            dimensions:cartItem.dimensions,
+            fabric: cartItem.fabric,
+            fabricName: cartItem.fabricName,
+            foam: cartItem.foam,
+            price: cartItem.price  , 
+            totalPrice: cartItem.price * ((cartItem.product.quantity > 0 && cartItem.qty > cartItem.product.quantity)? 
+                cartItem.product.quantity :cartItem.qty || 1)
+          }] }
         }),
+
         reduceItem: (product) =>
           set((state) => {
             let isProductInCart = false;
@@ -71,12 +69,14 @@ export const useCart = create<CartState>()(
             }
             return { items: state.items }
           }),
+
       removeItem: (id) =>
         set((state) => ({
           items: state.items.filter(
             (item) => item.product.id !== id
           ),
         })),
+
       clearCart: () => set({ items: [] }),
     }),
     {

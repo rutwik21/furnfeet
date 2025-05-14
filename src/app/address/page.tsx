@@ -1,18 +1,9 @@
 "use client"
-import { PRODUCT_CATEGORIES } from '@/config';
-import { cn, formatPrice } from '@/lib/utils';
 import { Button } from '../../components/ui/button';
-import { Link, X, Check, Loader2 } from 'lucide-react';
-import items from 'razorpay/dist/types/items';
-import products from 'razorpay/dist/types/products';
 import { useState } from 'react';
 
 const AddressPage = () => {
-  const [addresses, setAddresses] = useState([
-    // Sample addresses, you would get these from an API in a real-world app.
-    { id: 1, name: 'John Doe', contact: '1234567890', addressLine1: '123 Main St', addressLine2: 'Apt 101', city: 'New York', state: 'NY', pinCode: '10001' },
-    { id: 2, name: 'Jane Smith', contact: '0987654321', addressLine1: '456 Elm St', addressLine2: 'Apt 202', city: 'San Francisco', state: 'CA', pinCode: '94101' },
-  ]);
+  const [addresses, setAddresses] = useState<any[]>([]);
   
   const [showForm, setShowForm] = useState(false);
   const [newAddress, setNewAddress] = useState({

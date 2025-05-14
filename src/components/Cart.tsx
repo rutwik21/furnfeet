@@ -18,6 +18,7 @@ import { useCart } from '@/hooks/use-cart'
 import { ScrollArea } from './ui/scroll-area'
 import CartItem from './CartItem'
 import { useEffect, useState } from 'react'
+import { ADDED_CHARGES } from '@/config'
 
 const Cart = () => {
   const { items } = useCart()
@@ -45,7 +46,7 @@ const Cart = () => {
     0
   )
 
-  const fee = 10
+  const fee = ADDED_CHARGES.reduce((sum, charge) => sum + charge.value, 0);
 
   return (
     <Sheet>
@@ -77,16 +78,16 @@ const Cart = () => {
             <div className='space-y-4 pr-6'>
               <Separator />
               <div className='space-y-1.5 text-sm'>
-                <div className='flex'>
-                  <span className='flex-1'>Shipping</span>
-                  <span>Free</span>
-                </div>
-                <div className='flex'>
-                  <span className='flex-1'>
-                    Transaction Fee
-                  </span>
-                  <span>{formatPrice(fee)}</span>
-                </div>
+              {
+                ADDED_CHARGES.map((ele,i)=>{
+                  return <div key={i} className='flex'>
+                    <span className='flex-1'>
+                      {ele.label}
+                    </span>
+                    <span>{formatPrice(ele.value)}</span>
+                  </div>
+                })
+              }
                 <div className='flex'>
                   <span className='flex-1'>Total</span>
                   <span>

@@ -47,6 +47,13 @@ const UserAccountNav = ({ user }: { user: User }) => {
           </DropdownMenuItem>
           :null
         }
+        {
+          user.role == "admin" || user.role == 'architect' || user.role =='interiorDesigner' || user.role == 'karagir' ?
+          <DropdownMenuItem asChild>
+            <Link href='/commission'>Referral program</Link>
+          </DropdownMenuItem>
+          :null
+        }
         
         <DropdownMenuItem asChild>
           <Link href='/orderHistory'>Order History</Link>

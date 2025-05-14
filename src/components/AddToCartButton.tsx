@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import { Button } from './ui/button'
-import { CartItem, useCart } from '@/hooks/use-cart'
+import { useCart } from '@/hooks/use-cart'
 import { Product } from '@/payload-types'
+import { CartItem } from '@/lib/custom_interfaces'
 
 const AddToCartButton = ({
   product,
@@ -30,7 +31,10 @@ const AddToCartButton = ({
         setIsSuccess(true)
       }}
       size='lg'
-      className='w-full'>
+      className='w-full'
+      disabled={product.quantity==0 || 
+      (product.quantity>0 && Number(cartItem.qty) > Number(product.quantity))
+    }>
       {isSuccess ? 'Added!' : 'Add to cart'}
     </Button>
   )

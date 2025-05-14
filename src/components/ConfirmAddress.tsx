@@ -80,6 +80,7 @@ const ConfirmAddress:  React.FC<ChildProps> = ({handleAddressConfirmation}) => {
     });
     
     trpc.user.allAddresses.useQuery(undefined,{
+      enabled: addresses.length==0,
       onError:(err)=>{
         console.log(err)
       },

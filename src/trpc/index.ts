@@ -5,14 +5,17 @@ import { QueryValidator } from '../lib/validators/query-validator'
 import { getPayloadClient } from '../get-payload'
 import { paymentRouter } from './payment-router'
 import { userRouter } from './user-router'
-import { Product } from '@/payload-types'
 import { productRouter } from './product-router'
+import { orderRouter } from './order-router'
+import { commissionRouter } from './commission-router'
 
 export const appRouter = router({
   auth: authRouter,
   payment: paymentRouter,
   user: userRouter,
   product: productRouter,
+  order: orderRouter,
+  commission: commissionRouter,
   
   getInfiniteProducts: publicProcedure
     .input(

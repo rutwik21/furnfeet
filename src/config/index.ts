@@ -76,7 +76,24 @@
 //   { label: 'Comforters' as const, value: 'comforters' as const},
 //   { label: 'Door Mats' as const, value: 'door_mats' as const}
 // ];
-
+export const RAZORPAY_KEY_ID="rzp_test_y4wOGu5Ja28zmB"
+export const ADDED_CHARGES = [
+  {label: 'Transaction fee', value: 10},
+  {label: 'Item handling charge', value: 100}
+];
+export const PAYMENT_METHODS = [
+  { label: "UPI / Netbanking / Card", value:"online" as const},
+  { label: "Cash on delivery", value:"cashOnDelivery" as const},
+  // { label: "50% Advance, 50% on Delivery", value:"advance" as const, enabled: true},
+];
+export const ORDER_CANCELATION_REASONS = [
+  { label: "I have changed my mind", value:"I have changed my mind" as const},
+  { label: "I bought wrong item", value:"I bought wrong item" as const},
+  { label: "Product is not as expected", value:"Product is not as expected" as const},
+  { label: "I found cheaper alternative", value:"I found cheaper alternative" as const},
+  { label: "I placed a duplicate order", value:"I placed a duplicate order" as const},
+  { label: "Other", value:"other" as const},
+];
 export const PRODUCT_CATEGORIES = [
   {
     label: 'Sofas & Seating',
@@ -85,26 +102,51 @@ export const PRODUCT_CATEGORIES = [
       {
         name: 'Sofas',
         value:'sofa' as const,
+        commission:[
+          { label: 'Architect' , value: 0 },
+          { label: 'Interior Designer', value: 0 },
+          { label: 'Karagir', value: 0 },
+        ] as const,
         href: `/products?category=sofa_and_seating`,
         subCategories: [
           {
             name: 'L-Shape Sofa',
             value: 'l_shape_sofa' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=sofa_and_seating&subcategory=l_shape_sofa`,
           },
           {
             name: '3 Seat Sofa',
             value: '3_seat_sofa' as const,
+            commission:[
+              { label: 'Architect' , value: 15 },
+              { label: 'Interior Designer', value: 12 },
+              { label: 'Karagir', value: 10 },
+            ] as const,
             href: `/products?category=sofa_and_seating&subcategory=3_seat_sofa`,
           },
           {
             name: '2 Seat Sofa',
             value: '2_seat_sofa' as const,
+            commission:[
+              { label: 'Architect' , value: 10 },
+              { label: 'Interior Designer', value: 5 },
+              { label: 'Karagir', value: 1 },
+            ] as const,
             href: `/products?category=sofa_and_seating&subcategory=2_seat_sofa`,
           },
           {
             name: '1 Seat Sofa',
             value: '1_seat_sofa' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=sofa_and_seating&subcategory=1_seat_sofa`,
           },
         ]
@@ -112,21 +154,41 @@ export const PRODUCT_CATEGORIES = [
       {
         name: 'Recliners',
         value:'recliners' as const,
+        commission:[
+          { label: 'Architect' , value: 0 },
+          { label: 'Interior Designer', value: 0 },
+          { label: 'Karagir', value: 0 },
+        ] as const,
         href: '/products?category=sofa_and_seating&subcategory=recliners',
         subCategories: [
           {
             name: '3 Seat Recliner',
             value: '3_seat_recliner' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=sofa_and_seating&subcategory=3_seat_recliner`,
           },
           {
             name: '2 Seat Recliner',
             value: '2_seat_recliner' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=sofa_and_seating&subcategory=2_seat_recliner`,
           },
           {
             name: '1 Seat Recliner',
             value: '1_seat_recliner' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=sofa_and_seating&subcategory=1_seat_recliner`,
           },
         ]
@@ -134,18 +196,33 @@ export const PRODUCT_CATEGORIES = [
       {
         name: 'Sofa Cum Beds',
         value:'sofa_cum_bed' as const,
+        commission:[
+          { label: 'Architect' , value: 0 },
+          { label: 'Interior Designer', value: 0 },
+          { label: 'Karagir', value: 0 },
+        ] as const,
         href: '/products?category=sofa_and_seating&subcategory=sofa_cum_bed',
         subCategories: []
       },
       {
         name: 'Bean Bags',
         value:'bean_bag' as const,
+        commission:[
+          { label: 'Architect' , value: 0 },
+          { label: 'Interior Designer', value: 0 },
+          { label: 'Karagir', value: 0 },
+        ] as const,
         href: `/products?category=sofa_and_seating&subcategory=bean_bag`,
         subCategories: []
       },
       {
         name: 'New Arrivals',
         value:'',
+        commission:[
+          { label: 'Architect' , value: 0 },
+          { label: 'Interior Designer', value: 0 },
+          { label: 'Karagir', value: 0 },
+        ] as const,
         href: '/products?category=sofa_and_seating&sort=desc',
         subCategories: []
       },
@@ -159,41 +236,105 @@ export const PRODUCT_CATEGORIES = [
       {
         name: 'Spring mattresses',
         value: 'spring_mattresses' as const,
+        commission:[
+          { label: 'Architect' , value: 0 },
+          { label: 'Interior Designer', value: 0 },
+          { label: 'Karagir', value: 0 },
+        ] as const,
         href: `/products?category=mattresses&subcategory=spring_mattresses`,
         subCategories: [
           {
             name: 'Pocket Spring Mattress',
             value: 'pocket_spring_mattress' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=mattresses&subcategory=pocket_spring_mattress`,
           },
           {
             name: 'Bonnell Spring Mattress',
             value: 'bonnell_spring_mattress' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=mattresses&subcategory=bonnell_spring_mattress`,
           },
         ]
       },
       {
-        name: 'Memory Foam Mattress',
-        value: 'memory_foam_mattress' as const,
-        href: `/products?category=mattresses&subcategory=memory_foam_mattress`,
-        subCategories: []
-      },
-      {
-        name: 'Latex Foam Mattress',
-        value: 'latex_foam_mattress' as const,
-        href: '/products?category=mattresses&subcategory=latex_foam_mattress',
-        subCategories: []
-      },
-      {
-        name: 'Bonded Foam Mattress',
-        value: 'bonded_foam_mattress' as const,
-        href: '/products?category=mattresses&subcategory=bonded_foam_mattress',
-        subCategories: []
+        name: 'Foam Mattress',
+        value: 'foam_mattress' as const,
+        commission:[
+          { label: 'Architect' , value: 0 },
+          { label: 'Interior Designer', value: 0 },
+          { label: 'Karagir', value: 0 },
+        ] as const,
+        href: '/products?category=mattresses&subcategory=foam_mattress',
+        subCategories: [
+          {
+            name: 'Memory Foam Mattress',
+            value: 'memory_foam_mattress' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
+            href: `/products?category=mattresses&subcategory=memory_foam_mattress`
+          },
+          {
+            name: 'Latex Foam Mattress',
+            value: 'latex_foam_mattress' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
+            href: '/products?category=mattresses&subcategory=latex_foam_mattress'
+          },
+          {
+            name: 'Bonded Foam Mattress',
+            value: 'bonded_foam_mattress' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
+            href: '/products?category=mattresses&subcategory=bonded_foam_mattress'
+          },
+          {
+            name: 'HR Foam Mattress',
+            value: 'hr_foam_mattress' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
+            href: '/products?category=mattresses&subcategory=hr_foam_mattress'
+          },
+          {
+            name: 'Hitlon Mattress',
+            value: 'hitlon_mattress' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
+            href: '/products?category=mattresses&subcategory=hitlon_mattress'
+          }
+        ]
       },
       {
         name: 'Coir Mattress',
         value: 'coir_mattress' as const,
+        commission:[
+          { label: 'Architect' , value: 0 },
+          { label: 'Interior Designer', value: 0 },
+          { label: 'Karagir', value: 0 },
+        ] as const,
         href: '/products?category=mattresses&subcategory=coir_mattress',
         subCategories: []
       },
@@ -207,16 +348,31 @@ export const PRODUCT_CATEGORIES = [
       {
         name: 'Vases',
         value: 'vases' as const,
+        commission:[
+          { label: 'Architect' , value: 0 },
+          { label: 'Interior Designer', value: 0 },
+          { label: 'Karagir', value: 0 },
+        ] as const,
         href: `/products?category=home_decor&subcategory=vases`,
         subCategories: [
           {
             name: 'Table Vases',
             value: 'table_vases' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=home_decor&subcategory=table_vases`,
           },
           {
             name: 'Floor Vases',
             value: 'floor_vases' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=home_decor&subcategory=floor_vases`,
           },
         ]
@@ -224,21 +380,41 @@ export const PRODUCT_CATEGORIES = [
       {
         name: 'Table Decor',
         value: 'table_decor' as const,
+        commission:[
+          { label: 'Architect' , value: 0 },
+          { label: 'Interior Designer', value: 0 },
+          { label: 'Karagir', value: 0 },
+        ] as const,
         href: '/products?category=home_decor&subcategory=table_decor',
         subCategories: [
           {
             name: 'Decorative Boxes',
             value: 'decorative_boxes' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=home_decor&subcategory=decorative_boxes`,
           },
           {
             name: 'Desk Organizers',
             value: 'desk_organizers' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=home_decor&subcategory=desk_organizers`,
           },
           {
             name: 'Magazine Racks',
             value: 'magazine_racks' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=home_decor&subcategory=magazine_racks`,
           },
         ]
@@ -246,21 +422,41 @@ export const PRODUCT_CATEGORIES = [
       {
         name: 'Photo Frames',
         value: 'photo_frames' as const,
+        commission:[
+          { label: 'Architect' , value: 0 },
+          { label: 'Interior Designer', value: 0 },
+          { label: 'Karagir', value: 0 },
+        ] as const,
         href: '/products?category=home_decor&subcategory=photo_frames',
         subCategories: [
           {
             name: 'Single',
             value: 'single' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=home_decor&subcategory=single`,
           },
           {
             name: 'Collage',
             value: 'collage' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=home_decor&subcategory=collage`,
           },
           {
             name: 'Clip Photo',
             value: 'clip_photo' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=home_decor&subcategory=clip_photo`,
           },
         ]
@@ -268,21 +464,41 @@ export const PRODUCT_CATEGORIES = [
       {
         name: 'Candles',
         value: 'candles' as const,
+        commission:[
+          { label: 'Architect' , value: 0 },
+          { label: 'Interior Designer', value: 0 },
+          { label: 'Karagir', value: 0 },
+        ] as const,
         href: `/products?category=home_decor&subcategory=candles`,
         subCategories: [
           {
             name: 'Decorative Candles',
             value: 'decorative_candles' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=home_decor&subcategory=decorative_candles`,
           },
           {
             name: 'Scented Candles',
             value: 'scented_candles' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=home_decor&subcategory=scented_candles`,
           },
           {
             name: 'Tea Lights Candles',
             value: 'tea_lights_candles' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=home_decor&subcategory=tea_lights_candles`,
           },
         ]
@@ -290,26 +506,51 @@ export const PRODUCT_CATEGORIES = [
       {
         name: 'Outdoor Decor',
         value: 'outdoor_decor' as const,
+        commission:[
+          { label: 'Architect' , value: 0 },
+          { label: 'Interior Designer', value: 0 },
+          { label: 'Karagir', value: 0 },
+        ] as const,
         href: '/products?category=home_decor&subcategory=outdoor_decor',
         subCategories: [
           {
             name: 'Artificial Grass',
             value: 'artificial_grass' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=home_decor&subcategory=artificial_grass`,
           },
           {
             name: 'Artificial Plants',
             value: 'artificial_plants' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=home_decor&subcategory=artificial_plants`,
           },
           {
             name: 'Artificial Flowers',
             value: 'artificial_flowers' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=home_decor&subcategory=artificial_flowers`,
           },
           {
             name: 'Vertical Garden',
             value: 'vertical_garden' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=home_decor&subcategory=vertical_garden`,
           },
         ]
@@ -317,26 +558,51 @@ export const PRODUCT_CATEGORIES = [
       {
         name: 'Wall Decor',
         value: 'wall_decor' as const,
+        commission:[
+          { label: 'Architect' , value: 0 },
+          { label: 'Interior Designer', value: 0 },
+          { label: 'Karagir', value: 0 },
+        ] as const,
         href: '/products?category=home_decor&subcategory=wall_decor',
         subCategories: [
           {
             name: 'Wall Art',
             value: 'wall_art' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=home_decor&subcategory=wall_art`,
           },
           {
             name: 'Wall Hangings',
             value: 'wall_hangings' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=home_decor&subcategory=wall_hangings`,
           },
           {
             name: 'Wallpaper for Wall',
             value: 'wallpaper_for_wall' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=home_decor&subcategory=wallpaper_for_wall`,
           },
           {
             name: 'Wall Stickers',
             value: 'wall_stickers' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=home_decor&subcategory=wall_stickers`,
           },
         ]
@@ -344,26 +610,51 @@ export const PRODUCT_CATEGORIES = [
       {
         name: 'Wall Decor',
         value: 'wall_decor' as const,
+        commission:[
+          { label: 'Architect' , value: 0 },
+          { label: 'Interior Designer', value: 0 },
+          { label: 'Karagir', value: 0 },
+        ] as const,
         href: '/products?category=home_decor&subcategory=wall_decor',
         subCategories: [
           {
             name: 'Wall Art',
             value: 'wall_art' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=home_decor&subcategory=wall_art`,
           },
           {
             name: 'Wall Hangings',
             value: 'wall_hangings' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=home_decor&subcategory=wall_hangings`,
           },
           {
             name: 'Wallpaper for Wall',
             value: 'wallpaper_for_wall' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=home_decor&subcategory=wallpaper_for_wall`,
           },
           {
             name: 'Wall Stickers',
             value: 'wall_stickers' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=home_decor&subcategory=wall_stickers`,
           },
         ]
@@ -378,21 +669,41 @@ export const PRODUCT_CATEGORIES = [
       {
         name: 'Bed Sheets',
         value: 'bed_sheets' as const,
+        commission:[
+          { label: 'Architect' , value: 0 },
+          { label: 'Interior Designer', value: 0 },
+          { label: 'Karagir', value: 0 },
+        ] as const,
         href: `/products?category=furnishings&subcategory=bed_sheets`,
         subCategories: [
           {
             name: 'King Bed Sheets',
             value: 'king_bed_sheets' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=furnishings&subcategory=king_bed_sheets`,
           },
           {
             name: 'Queen Bed Sheets',
             value: 'queen_bed_sheets' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=furnishings&subcategory=queen_bed_sheets`,
           },
           {
             name: 'Single Bed Sheets',
             value: 'single_bed_sheets' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=furnishings&subcategory=single_bed_sheets`,
           },
         ]
@@ -400,21 +711,41 @@ export const PRODUCT_CATEGORIES = [
       {
         name: 'Blankets & Quilts',
         value: 'blankets_and_quilts' as const,
+        commission:[
+          { label: 'Architect' , value: 0 },
+          { label: 'Interior Designer', value: 0 },
+          { label: 'Karagir', value: 0 },
+        ] as const,
         href: '/products?category=furnishings&subcategory=blankets_and_quilts',
         subCategories: [
           {
             name: 'Quilts',
             value: 'quilts' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=furnishings&subcategory=quilts`,
           },
           {
             name: 'Dohars',
             value: 'dohars' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=furnishings&subcategory=dohars`,
           },
           {
             name: 'Blankets',
             value: 'blankets' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=furnishings&subcategory=blankets`,
           },
         ]
@@ -422,21 +753,41 @@ export const PRODUCT_CATEGORIES = [
       {
         name: 'Curtains',
         value: 'curtains' as const,
+        commission:[
+          { label: 'Architect' , value: 0 },
+          { label: 'Interior Designer', value: 0 },
+          { label: 'Karagir', value: 0 },
+        ] as const,
         href: '/products?category=furnishings&subcategory=curtains',
         subCategories: [
           {
             name: 'Door Curtains',
             value: 'door_curtains' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=furnishings&subcategory=door_curtains`,
           },
           {
             name: 'Window Curtains',
             value: 'window_curtains' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=furnishings&subcategory=window_curtains`,
           },
           {
             name: 'Blinds',
             value: 'blinds' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=furnishings&subcategory=blinds`,
           },
         ]
@@ -444,31 +795,61 @@ export const PRODUCT_CATEGORIES = [
       {
         name: 'Carpets',
         value: 'carpets' as const,
+        commission:[
+          { label: 'Architect' , value: 0 },
+          { label: 'Interior Designer', value: 0 },
+          { label: 'Karagir', value: 0 },
+        ] as const,
         href: `/products?category=furnishings&subcategory=carpets`,
         subCategories: [
           {
             name: '3 ft x 5 ft',
             value: '3_by_5' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=furnishings&subcategory=3_by_5`,
           },
           {
             name: '5 ft x 7 ft',
             value: '5_by_7' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=furnishings&subcategory=5_by_7`,
           },
           {
             name: '6 ft x 9 ft',
             value: '6_by_9' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=furnishings&subcategory=6_by_9`,
           },
           {
             name: '8 ft x 10 ft',
             value: '8_by_10' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=furnishings&subcategory=8_by_10`,
           },
           {
             name: '9 ft x 12 ft',
             value: '9_by_12' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=furnishings&subcategory=9_by_12`,
           },
         ]
@@ -476,31 +857,61 @@ export const PRODUCT_CATEGORIES = [
       {
         name: 'Cushions & Covers',
         value: 'cushions_and_covers' as const,
+        commission:[
+          { label: 'Architect' , value: 0 },
+          { label: 'Interior Designer', value: 0 },
+          { label: 'Karagir', value: 0 },
+        ] as const,
         href: '/products?category=furnishings&subcategory=cushions_and_covers',
         subCategories: [
           {
             name: 'Pillows',
             value: 'pillow' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=furnishings&subcategory=pillow`,
           },
           {
             name: 'Pillow Covers',
             value: 'pillow_covers' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=furnishings&subcategory=pillow_covers`,
           },
           {
             name: 'Cushions',
             value: 'cushions' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=furnishings&subcategory=cushions`,
           },
           {
             name: 'Cushions Cover',
             value: 'cushion_cover' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=furnishings&subcategory=cushion_cover`,
           },
           {
             name: 'Bolster',
             value: 'bolster' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=furnishings&subcategory=bolster`,
           },
         ]
@@ -508,21 +919,41 @@ export const PRODUCT_CATEGORIES = [
       {
         name: 'Furnishings',
         value: 'furnishings' as const,
+        commission:[
+          { label: 'Architect' , value: 0 },
+          { label: 'Interior Designer', value: 0 },
+          { label: 'Karagir', value: 0 },
+        ] as const,
         href: '/products?category=furnishings',
         subCategories: [
           {
             name: 'Towels',
             value: 'towels' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=furnishings&subcategory=towels`,
           },
           {
             name: 'Comforters',
             value: 'comforters' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=furnishings&subcategory=comforters`,
           },
           {
             name: 'Door Mats',
             value: 'door_mats' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=furnishings&subcategory=door_mats`,
           },
         ]
@@ -537,16 +968,31 @@ export const PRODUCT_CATEGORIES = [
       {
         name: 'Fabric',
         value: 'fabric' as const,
+        commission:[
+          { label: 'Architect' , value: 0 },
+          { label: 'Interior Designer', value: 0 },
+          { label: 'Karagir', value: 0 },
+        ] as const,
         href: `/products?category=raw_materials&subcategory=fabric`,
         subCategories: [
           {
             name: 'Sofa Fabric',
             value: 'sofa_fabric' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=raw_materials&subcategory=sofa_fabric`,
           },
           {
             name: 'Curtain Fabric',
             value: 'curtain_fabric' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=raw_materials&subcategory=curtain_fabric`,
           },
         ]
@@ -554,21 +1000,41 @@ export const PRODUCT_CATEGORIES = [
       {
         name: 'Foam',
         value: 'foam' as const,
+        commission:[
+          { label: 'Architect' , value: 0 },
+          { label: 'Interior Designer', value: 0 },
+          { label: 'Karagir', value: 0 },
+        ] as const,
         href: `/products?category=raw_materials&subcategory=foam`,
         subCategories: [
           {
             name: '50 Density',
             value: '50Density' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=raw_materials&subcategory=50Density`,
           },
           {
             name: '40 Density',
             value: '40Density' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=raw_materials&subcategory=40Density`,
           },
           {
             name: '30 Density',
             value: '30Density' as const,
+            commission:[
+              { label: 'Architect' , value: 0 },
+              { label: 'Interior Designer', value: 0 },
+              { label: 'Karagir', value: 0 },
+            ] as const,
             href: `/products?category=raw_materials&subcategory=30Density`,
           },
         ]
@@ -576,17 +1042,32 @@ export const PRODUCT_CATEGORIES = [
       // {
       //   name: 'Ply',
       //   value: 'ply' as const,
-      //   href: `/products?category=raw_materials&subcategory=ply`,
+        // commission:[
+        //     { label: 'Architect' , value: 0 },
+        //     { label: 'Interior Designer', value: 0 },
+        //     { label: 'Karagir', value: 0 },
+        //   ] as const,  
+      // href: `/products?category=raw_materials&subcategory=ply`,
       //   subCategories: [
       //     {
       //       name: '18mm',
       //       value: '18mm' as const,
-      //       href: `/products?category=raw_materials&subcategory=18mm`,
+        // commission:[
+        //     { label: 'Architect' , value: 0 },
+        //     { label: 'Interior Designer', value: 0 },
+        //     { label: 'Karagir', value: 0 },
+        //   ] as const,      
+      // href: `/products?category=raw_materials&subcategory=18mm`,
       //     },
       //     {
       //       name: '12mm',
       //       value: '12mm' as const,
-      //       href: `/products?category=raw_materials&subcategory=12mm`,
+        // commission:[
+        //     { label: 'Architect' , value: 0 },
+        //     { label: 'Interior Designer', value: 0 },
+        //     { label: 'Karagir', value: 0 },
+        //   ] as const,      
+      // href: `/products?category=raw_materials&subcategory=12mm`,
       //     },
       //   ]
       // },
@@ -600,132 +1081,252 @@ export const PRODUCT_CATEGORIES = [
   //     {
   //       name: 'Favorite Icon Picks',
   //       value: 'lamps_and_lights' as const,
-  //       href: `/products?category=lamps_and_lights&subcategory=3_seat_recliner`,
+    // commission:[
+    //         { label: 'Architect' , value: 0 },
+    //         { label: 'Interior Designer', value: 0 },
+    //         { label: 'Karagir', value: 0 },
+    //       ] as const,      
+  // href: `/products?category=lamps_and_lights&subcategory=3_seat_recliner`,
   //       subCategories: [
   //         {
   //           name: '3 Seat Recliner',
   //           value: 'lamps_and_lights' as const,
-  //           href: `/products?category=lamps_and_lights&subcategory=3_seat_recliner`,
+    // commission:[
+    //         { label: 'Architect' , value: 0 },
+    //         { label: 'Interior Designer', value: 0 },
+    //         { label: 'Karagir', value: 0 },
+    //       ] as const,          
+  // href: `/products?category=lamps_and_lights&subcategory=3_seat_recliner`,
   //         },
   //         {
   //           name: '2 Seat Recliner',
   //           value: 'lamps_and_lights' as const,
-  //           href: `/products?category=lamps_and_lights&subcategory=2_seat_recliner`,
+    // commission:[
+    //         { label: 'Architect' , value: 0 },
+    //         { label: 'Interior Designer', value: 0 },
+    //         { label: 'Karagir', value: 0 },
+    //       ] as const,          
+  // href: `/products?category=lamps_and_lights&subcategory=2_seat_recliner`,
   //         },
   //         {
   //           name: '1 Seat Recliner',
   //           value: 'lamps_and_lights' as const,
-  //           href: `/products?category=lamps_and_lights&subcategory=1_seat_recliner`,
+    // commission:[
+    //         { label: 'Architect' , value: 0 },
+    //         { label: 'Interior Designer', value: 0 },
+    //         { label: 'Karagir', value: 0 },
+    //       ] as const,          
+  // href: `/products?category=lamps_and_lights&subcategory=1_seat_recliner`,
   //         },
   //       ]
   //     },
   //     {
   //       name: 'New Arrivals',
   //       value: 'lamps_and_lights' as const,
-  //       href: '/products?category=lamps_and_lights&subcategory=3_seat_recliner&sort=desc',
+    // commission:[
+    //         { label: 'Architect' , value: 0 },
+    //         { label: 'Interior Designer', value: 0 },
+    //         { label: 'Karagir', value: 0 },
+    //       ] as const,      
+  // href: '/products?category=lamps_and_lights&subcategory=3_seat_recliner&sort=desc',
   //       subCategories: [
   //         {
   //           name: '3 Seat Recliner',
   //           value: 'lamps_and_lights' as const,
-  //           href: `/products?category=lamps_and_lights&subcategory=3_seat_recliner`,
+    // commission:[
+    //         { label: 'Architect' , value: 0 },
+    //         { label: 'Interior Designer', value: 0 },
+    //         { label: 'Karagir', value: 0 },
+    //       ] as const,          
+  // href: `/products?category=lamps_and_lights&subcategory=3_seat_recliner`,
   //         },
   //         {
   //           name: '2 Seat Recliner',
   //           value: 'lamps_and_lights' as const,
-  //           href: `/products?category=lamps_and_lights&subcategory=2_seat_recliner`,
+    // commission:[
+    //         { label: 'Architect' , value: 0 },
+    //         { label: 'Interior Designer', value: 0 },
+    //         { label: 'Karagir', value: 0 },
+    //       ] as const,          
+  // href: `/products?category=lamps_and_lights&subcategory=2_seat_recliner`,
   //         },
   //         {
   //           name: '1 Seat Recliner',
   //           value: 'lamps_and_lights' as const,
-  //           href: `/products?category=lamps_and_lights&subcategory=1_seat_recliner`,
+    // commission:[
+    //         { label: 'Architect' , value: 0 },
+    //         { label: 'Interior Designer', value: 0 },
+    //         { label: 'Karagir', value: 0 },
+    //       ] as const,          
+  // href: `/products?category=lamps_and_lights&subcategory=1_seat_recliner`,
   //         },
   //       ]
   //     },
   //     {
   //       name: 'Bestselling Icons',
   //       value: 'lamps_and_lights' as const,
-  //       href: '/products?category=lamps_and_lights&subcategory=3_seat_recliner',
+    // commission:[
+    //         { label: 'Architect' , value: 0 },
+    //         { label: 'Interior Designer', value: 0 },
+    //         { label: 'Karagir', value: 0 },
+    //       ] as const,      
+  // href: '/products?category=lamps_and_lights&subcategory=3_seat_recliner',
   //       subCategories: [
   //         {
   //           name: '3 Seat Recliner',
   //           value: 'lamps_and_lights' as const,
-  //           href: `/products?category=lamps_and_lights&subcategory=3_seat_recliner`,
+    // commission:[
+    //         { label: 'Architect' , value: 0 },
+    //         { label: 'Interior Designer', value: 0 },
+    //         { label: 'Karagir', value: 0 },
+    //       ] as const,          
+  // href: `/products?category=lamps_and_lights&subcategory=3_seat_recliner`,
   //         },
   //         {
   //           name: '2 Seat Recliner',
   //           value: 'lamps_and_lights' as const,
-  //           href: `/products?category=lamps_and_lights&subcategory=2_seat_recliner`,
+    // commission:[
+    //         { label: 'Architect' , value: 0 },
+    //         { label: 'Interior Designer', value: 0 },
+    //         { label: 'Karagir', value: 0 },
+    //       ] as const,          
+  // href: `/products?category=lamps_and_lights&subcategory=2_seat_recliner`,
   //         },
   //         {
   //           name: '1 Seat Recliner',
   //           value: 'lamps_and_lights' as const,
-  //           href: `/products?category=lamps_and_lights&subcategory=1_seat_recliner`,
+    // commission:[
+    //         { label: 'Architect' , value: 0 },
+    //         { label: 'Interior Designer', value: 0 },
+    //         { label: 'Karagir', value: 0 },
+    //       ] as const,          
+  // href: `/products?category=lamps_and_lights&subcategory=1_seat_recliner`,
   //         },
   //       ]
   //     },
   //     {
   //       name: 'Favorite Icon Picks',
   //       value: 'lamps_and_lights' as const,
-  //       href: `/products?category=lamps_and_lights&subcategory=3_seat_recliner`,
+    // commission:[
+    //         { label: 'Architect' , value: 0 },
+    //         { label: 'Interior Designer', value: 0 },
+    //         { label: 'Karagir', value: 0 },
+    //       ] as const,      
+  // href: `/products?category=lamps_and_lights&subcategory=3_seat_recliner`,
   //       subCategories: [
   //         {
   //           name: '3 Seat Recliner',
   //           value: 'lamps_and_lights' as const,
-  //           href: `/products?category=lamps_and_lights&subcategory=3_seat_recliner`,
+    // commission:[
+    //         { label: 'Architect' , value: 0 },
+    //         { label: 'Interior Designer', value: 0 },
+    //         { label: 'Karagir', value: 0 },
+    //       ] as const,          
+  // href: `/products?category=lamps_and_lights&subcategory=3_seat_recliner`,
   //         },
   //         {
   //           name: '2 Seat Recliner',
   //           value: 'lamps_and_lights' as const,
-  //           href: `/products?category=lamps_and_lights&subcategory=2_seat_recliner`,
+    // commission:[
+    //         { label: 'Architect' , value: 0 },
+    //         { label: 'Interior Designer', value: 0 },
+    //         { label: 'Karagir', value: 0 },
+    //       ] as const,          
+  // href: `/products?category=lamps_and_lights&subcategory=2_seat_recliner`,
   //         },
   //         {
   //           name: '1 Seat Recliner',
   //           value: 'lamps_and_lights' as const,
-  //           href: `/products?category=lamps_and_lights&subcategory=1_seat_recliner`,
+    // commission:[
+    //         { label: 'Architect' , value: 0 },
+    //         { label: 'Interior Designer', value: 0 },
+    //         { label: 'Karagir', value: 0 },
+    //       ] as const,          
+  // href: `/products?category=lamps_and_lights&subcategory=1_seat_recliner`,
   //         },
   //       ]
   //     },
   //     {
   //       name: 'New Arrivals',
   //       value: 'lamps_and_lights' as const,
-  //       href: '/products?category=lamps_and_lights&subcategory=3_seat_recliner&sort=desc',
+    // commission:[
+    //         { label: 'Architect' , value: 0 },
+    //         { label: 'Interior Designer', value: 0 },
+    //         { label: 'Karagir', value: 0 },
+    //       ] as const,      
+  // href: '/products?category=lamps_and_lights&subcategory=3_seat_recliner&sort=desc',
   //       subCategories: [
   //         {
   //           name: '3 Seat Recliner',
   //           value: 'lamps_and_lights' as const,
-  //           href: `/products?category=lamps_and_lights&subcategory=3_seat_recliner`,
+    // commission:[
+    //         { label: 'Architect' , value: 0 },
+    //         { label: 'Interior Designer', value: 0 },
+    //         { label: 'Karagir', value: 0 },
+    //       ] as const,          
+  // href: `/products?category=lamps_and_lights&subcategory=3_seat_recliner`,
   //         },
   //         {
   //           name: '2 Seat Recliner',
   //           value: 'lamps_and_lights' as const,
-  //           href: `/products?category=lamps_and_lights&subcategory=2_seat_recliner`,
+    // commission:[
+    //         { label: 'Architect' , value: 0 },
+    //         { label: 'Interior Designer', value: 0 },
+    //         { label: 'Karagir', value: 0 },
+    //       ] as const,          
+  // href: `/products?category=lamps_and_lights&subcategory=2_seat_recliner`,
   //         },
   //         {
   //           name: '1 Seat Recliner',
   //           value: 'lamps_and_lights' as const,
-  //           href: `/products?category=lamps_and_lights&subcategory=1_seat_recliner`,
+    // commission:[
+    //         { label: 'Architect' , value: 0 },
+    //         { label: 'Interior Designer', value: 0 },
+    //         { label: 'Karagir', value: 0 },
+    //       ] as const,          
+  // href: `/products?category=lamps_and_lights&subcategory=1_seat_recliner`,
   //         },
   //       ]
   //     },
   //     {
   //       name: 'Bestselling Icons',
   //       value: 'lamps_and_lights' as const,
-  //       href: '/products?category=lamps_and_lights&subcategory=3_seat_recliner',
+    // commission:[
+    //         { label: 'Architect' , value: 0 },
+    //         { label: 'Interior Designer', value: 0 },
+    //         { label: 'Karagir', value: 0 },
+    //       ] as const,      
+  // href: '/products?category=lamps_and_lights&subcategory=3_seat_recliner',
   //       subCategories: [
   //         {
   //           name: '3 Seat Recliner',
   //           value: 'lamps_and_lights' as const,
-  //           href: `/products?category=lamps_and_lights&subcategory=3_seat_recliner`,
+    // commission:[
+    //         { label: 'Architect' , value: 0 },
+    //         { label: 'Interior Designer', value: 0 },
+    //         { label: 'Karagir', value: 0 },
+    //       ] as const,          
+  // href: `/products?category=lamps_and_lights&subcategory=3_seat_recliner`,
   //         },
   //         {
   //           name: '2 Seat Recliner',
   //           value: 'lamps_and_lights' as const,
-  //           href: `/products?category=lamps_and_lights&subcategory=2_seat_recliner`,
+    // commission:[
+    //         { label: 'Architect' , value: 0 },
+    //         { label: 'Interior Designer', value: 0 },
+    //         { label: 'Karagir', value: 0 },
+    //       ] as const,          
+  // href: `/products?category=lamps_and_lights&subcategory=2_seat_recliner`,
   //         },
   //         {
   //           name: '1 Seat Recliner',
   //           value: 'lamps_and_lights' as const,
-  //           href: `/products?category=lamps_and_lights&subcategory=1_seat_recliner`,
+    // commission:[
+    //         { label: 'Architect' , value: 0 },
+    //         { label: 'Interior Designer', value: 0 },
+    //         { label: 'Karagir', value: 0 },
+    //       ] as const,          
+  // href: `/products?category=lamps_and_lights&subcategory=1_seat_recliner`,
   //         },
   //       ]
   //     },

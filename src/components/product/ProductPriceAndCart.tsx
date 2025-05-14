@@ -15,7 +15,8 @@ import { ExternalLink } from 'lucide-react';
 import ProductPrice from './productPrice';
 import AddToCartButton from '../AddToCartButton';
 import { notFound } from 'next/navigation';
-import { CartItem } from '@/hooks/use-cart';
+import { CartItem } from '@/lib/custom_interfaces';
+import { cn } from '@/lib/utils';
 
 
 
@@ -89,14 +90,20 @@ function ProductPriceAndCart({product}:{product:Product}){
           product.warranty?
           <div className='w-1/2 text-sm'>
             <p className='text-sm md:text-base font-semibold'>Warranty (Months):</p>
-            <p className='text-sm md:text-base text-muted-foreground'>{product.warranty}</p>
+            <p className='text-sm md:text-base text-muted-foreground'>{product.warranty} {product.warranty/12 >= 1?"("+Math.round(product.warranty/12)+" year)": null}</p>
           </div>:null
         }
       </div>
 
-      <div >
-        <div className='mt-4 fixed bottom-4 left-4 right-4 z-10 md:static '>
+      <div>
+        <div className={cn('mt-4 fixed bottom-4 left-4 right-4 z-10 md:static ',{'bg-white': product.quantity==0})}>
           <AddToCartButton product={product} cartItem={cartItem} />
+          {product.quantity==0?
+            <p className='text-red-700 text-center text-sm'>Currently out of stock</p>
+          :null}
+          {product.quantity>0 && Number(cartItem.qty) > Number(product.quantity)?
+            <p className='text-red-700 text-center text-sm'>Available quantity is {product.quantity}</p>
+          :null}
         </div>
       </div>
     </>

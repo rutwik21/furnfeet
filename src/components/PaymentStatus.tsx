@@ -10,13 +10,15 @@ interface PaymentStatusProps {
   orderId: string
   isPaid: boolean
   address: Address
+  page?: string
 }
 
 const PaymentStatus = ({
   orderEmail,
   orderId,
   isPaid,
-  address
+  address,
+  page
 }: PaymentStatusProps) => {
   const router = useRouter()
 
@@ -38,7 +40,7 @@ const PaymentStatus = ({
     <div className='mt-16 grid grid-cols-2 gap-x-4 text-sm text-gray-600'>
       <div>
         <p className='font-medium text-gray-900'>
-          Shipping To
+          {page && page=='orderStatus'?"Address":"Shipping To"}
         </p>
         <p className='text-sm w-auto font-semibold text-gray-900'>{address.name}</p>
         <p>{address.addressLine1}, {address.addressLine2}</p>

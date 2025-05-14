@@ -4,8 +4,9 @@ import { cookies } from 'next/headers'
 import { getPayloadClient } from '@/get-payload'
 import { notFound, redirect } from 'next/navigation'
 import { Address, Order, Product, User } from '@/payload-types'
-import { PRODUCT_CATEGORIES } from '@/config'
+import { ADDED_CHARGES, PRODUCT_CATEGORIES } from '@/config'
 import { formatPrice } from '@/lib/utils'
+import { OrderItem } from '@/lib/custom_interfaces'
 import Link from 'next/link'
 import PaymentStatus from '@/components/PaymentStatus'
 
@@ -20,7 +21,6 @@ const ThankYouPage = async ({
 }: PageProps) => {
   const orderId = searchParams.orderId
   const nextCookies = cookies()
-
   const { user } = await getServerSideUser(nextCookies)
   const payload = await getPayloadClient()
 
@@ -37,7 +37,7 @@ const ThankYouPage = async ({
   const [order] = orders 
   if (!order) return notFound()
     
-const orderUserId = typeof order.user === 'string' ? order.user : (order.user as User).id
+  const orderUserId = typeof order.user === 'string' ? order.user : (order.user as User).id
 
   if (orderUserId !== user?.id) {
     return redirect(
@@ -45,15 +45,7 @@ const orderUserId = typeof order.user === 'string' ? order.user : (order.user as
     )
   }
 
-  
-  interface data{
-    productId:Product,
-    size:string,
-    price: number,
-    totalPrice: number,
-    quantity: number
-  }
-  const data = order.data as data[];
+  const data = order.data as OrderItem[];
   const address = order.address as Address;
 
   const orderTotal = order.totalOrderValue as number;
@@ -106,64 +98,77 @@ const orderUserId = typeof order.user === 'string' ? order.user : (order.user as
               </div>
 
               <ul className='mt-6 divide-y divide-gray-200 border-t border-gray-200 text-sm font-medium text-muted-foreground'>
-                {(data).map(
-                  ({productId:product, price, quantity, size}) => {
-                    const label = PRODUCT_CATEGORIES.find(
-                      ({ value }) =>
-                        value === product.category
-                    )?.label
-                    // (
-                    //   product.product_files as ProductFile
-                    // ).url as string
-
-                    const { image } = product.images[0]
-
-                    return (
-                      <li
-                        key={product.id}
-                        className='flex space-x-6 py-6'
-                        >
-                        <div className='relative h-24 w-24'>
-                          {typeof image !== 'string' &&
-                          image.url ? (
-                            <Link href={`${process.env.NEXT_PUBLIC_SERVER_URL}/product/${product.id}`}>
-                            <Image
-                              fill
-                              src={image.url}
-                              alt={`${product.name} image`}
-                              className='flex-none rounded-md bg-gray-100 object-cover object-center'
-                            /></Link>
-                          ) : null}
-                        </div>
-
-                        <div className='flex-auto flex flex-col justify-between'>
-                          <div className='space-y-1'>
-                            <h3 className='text-gray-900'>
-                              {product.name}
-                            </h3>
-
-                            <p className='my-1'>
-                              Category: {label}
-                            </p>
-
-                            <div className="flex gap-2 my-1">
-                              {size?<p>Size: {size}</p>:null}
-                              <p>
-                                Qty: {quantity}
-                              </p>
-                              
-                            </div>
+              {(data).map(
+                    ({productId:product, price, qty, dimensions}) => {
+                      if(typeof product == 'string') return null
+                      const label = PRODUCT_CATEGORIES.find(
+                        ({ value }) =>
+                          value === product.category
+                      )?.label
+                      // (
+                      //   product.product_files as ProductFile
+                      // ).url as string
+  
+                      const { image } = product.images[0]
+  
+                      return (
+                        <li
+                          key={product.id}
+                          className='flex space-x-6 py-6'
+                          >
+                          <div className='relative h-24 w-24'>
+                            {typeof image !== 'string' &&
+                            image.url ? (
+                              <Link href={`${process.env.NEXT_PUBLIC_SERVER_URL}/product/${product.id}`}>
+                              <Image
+                                fill
+                                src={image.url}
+                                alt={`${product.name} image`}
+                                className='flex-none rounded-md bg-gray-100 object-cover object-center'
+                              /></Link>
+                            ) : null}
                           </div>
+  
+                          <div className='flex-auto flex flex-col justify-between'>
+                            <div className='space-y-1'>
+                              <h3 className='text-gray-900'>
+                                {product.name}
+                              </h3>
+  
+                              <p className='line-clamp-1 text-xs capitalize my-1 text-muted-foreground'>
+                                Category: {label}
+                              </p>
+                              {dimensions && dimensions.length>0?
+                              <div className="flex gap-2 my-1">
+                                
+                                  <div className="flex gap-1">
+                                    <span className='line-clamp-1 text-xs capitalize text-muted-foreground'>
+                                    Size:
+                                    </span>
+                                    <ul>
+                                      {dimensions && dimensions?.length>0?
+                                        dimensions?.map((size, i)=>{
+                                          return <li key={i} className='line-clamp-1 text-xs capitalize text-muted-foreground'>{size.length}L x {size.width}W x {size.height}H</li>
+                                        })
+                                      :""}
+                                    </ul>
 
-                        </div>
-
-                        <p className='flex-none font-medium text-gray-900'>
-                          {formatPrice(price)}
-                        </p>
-                      </li>
-                    )
-                  }
-                )}
+                                  </div>
+                              </div>:null}
+                              <p className='line-clamp-1 text-xs capitalize my-1 text-muted-foreground'>
+                                Qty: {qty}
+                              </p>
+                            </div>
+  
+                          </div>
+  
+                          <p className='flex-none font-medium text-gray-900'>
+                            {formatPrice(price)}
+                          </p>
+                        </li>
+                      )
+                    }
+                  )}
               </ul>
               {/* <ul className='mt-6 divide-y divide-gray-200 border-t border-gray-200 text-sm font-medium text-muted-foreground'>
                 {(order.products as Product[]).map(
@@ -227,19 +232,23 @@ const orderUserId = typeof order.user === 'string' ? order.user : (order.user as
               </ul> */}
 
               <div className='space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-muted-foreground'>
-                <div className='flex justify-between'>
+                {/* <div className='flex justify-between'>
                   <p>Subtotal</p>
                   <p className='text-gray-900'>
-                    {formatPrice(orderTotal - 10)}
+                    {formatPrice(orderTotal - FLAT_TRANSACTION_FEE)}
                   </p>
-                </div>
+                </div> */}
 
-                <div className='flex justify-between'>
-                  <p>Transaction Fee</p>
-                  <p className='text-gray-900'>
-                    {formatPrice(10)}
-                  </p>
-                </div>
+                {
+                  ADDED_CHARGES.map((ele,i)=>{
+                    return <div key={i} className='flex justify-between'>
+                      <p>{ele.label}</p>
+                      <p className='text-gray-900'>
+                        {formatPrice(ele.value)}
+                      </p>
+                    </div>
+                  })
+                }
 
                 <div className='flex items-center justify-between border-t border-gray-200 pt-6 text-gray-900'>
                   <p className='text-base'>Total</p>

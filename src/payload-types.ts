@@ -14,6 +14,8 @@ export interface Config {
     orders: Order;
     addresses: Address;
     productPriceList: ProductPriceList;
+    commissionLedger: CommissionLedger;
+    withdrawalRequests: WithdrawalRequest;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -29,6 +31,14 @@ export interface User {
   phone: number;
   role: 'admin' | 'user' | 'architect' | 'interiorDesigner' | 'karagir';
   referedBy?: (string | null) | User;
+  paymentDetails?:
+    | {
+        label: 'UPI' | 'Bank' | 'Wallet';
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  isEligibleForReferalProgram?: boolean | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -70,9 +80,12 @@ export interface Product {
     | 'spring_mattresses'
     | 'pocket_spring_mattress'
     | 'bonnell_spring_mattress'
+    | 'foam_mattress'
     | 'memory_foam_mattress'
     | 'latex_foam_mattress'
     | 'bonded_foam_mattress'
+    | 'hr_foam_mattress'
+    | 'hitlon_mattress'
     | 'coir_mattress'
     | 'vases'
     | 'table_vases'
@@ -149,6 +162,13 @@ export interface Product {
       }[]
     | null;
   price: string | ProductPriceList;
+  quantity: number;
+  margin: number;
+  isCashOnDeliveryOptionAvailable: boolean;
+  overrideCommission: boolean;
+  architect: number;
+  interiorDesigner: number;
+  karagir: number;
   approvedForSale?: ('pending' | 'approved' | 'denied') | null;
   images: {
     image: string | Media;
@@ -164,6 +184,7 @@ export interface Product {
 export interface ProductPriceList {
   isCustomizable?: boolean | null;
   hasStandardSizes?: boolean | null;
+  roundupStandardSize?: boolean | null;
   id: string;
   mrp: number;
   unit: 'perSqFt' | 'perRunningFt' | 'perFt' | 'perMtr' | 'perSqMtr';
@@ -249,13 +270,24 @@ export interface Order {
   orderId: string;
   user: string | User;
   address: string | Address;
-  razorpayOrderId?: string | null;
-  razorpayPaymentId?: string | null;
-  status?: string | null;
-  paymentMode?: string | null;
+  paymentMode?: ('online' | 'cashOnDelivery') | null;
   totalOrderValue: number;
   data: {
     productId: string | Product;
+    orderStatus?:
+      | (
+          | 'received'
+          | 'inProcess'
+          | 'inTransit'
+          | 'rejected'
+          | 'confirmed'
+          | 'shipped'
+          | 'outForDelivery'
+          | 'delivered'
+          | 'cancelled'
+        )
+      | null;
+    estimatedDeliveryDate?: string | null;
     dimensions?:
       | {
           length: number;
@@ -265,8 +297,17 @@ export interface Order {
           id?: string | null;
         }[]
       | null;
-    qty?: number | null;
     price: number;
+    qty?: number | null;
+    fabric?: (string | null) | Product;
+    foam?: string | null;
+    isCustomized?: boolean | null;
+    isOrderCancelled?: boolean | null;
+    isMoneyRefunded?: boolean | null;
+    reasonForCancellation?: string | null;
+    profit?: number | null;
+    commission?: number | null;
+    updatedAt?: string | null;
     id?: string | null;
   }[];
   updatedAt: string;
@@ -289,6 +330,38 @@ export interface Address {
   isDefaultAddress?: boolean | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "commissionLedger".
+ */
+export interface CommissionLedger {
+  id: string;
+  user: string | User;
+  description: string;
+  credit?: number | null;
+  debit?: number | null;
+  balance: number;
+  isCompleted: boolean;
+  isCancelled?: boolean | null;
+  createdAt: string;
+  updatedAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "withdrawalRequests".
+ */
+export interface WithdrawalRequest {
+  id: string;
+  user: string | User;
+  comment?: string | null;
+  amount: number;
+  acDetails: string;
+  commissionLedger: string | CommissionLedger;
+  paymentMode: 'UPI' | 'Bank' | 'Wallet' | 'Cash';
+  status: 'Pending' | 'Complete' | 'Rejected' | 'Cancelled';
+  createdAt: string;
+  updatedAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -327,5 +400,5 @@ export interface PayloadMigration {
 
 
 declare module 'payload' {
-  export interface GeneratedTypess extends Config {}
+  export interface GeneratedTypes extends Config {}
 }

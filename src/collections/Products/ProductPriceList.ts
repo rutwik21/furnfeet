@@ -128,6 +128,15 @@ export const ProductPriceList: CollectionConfig = {
           type:'checkbox',
           defaultValue: false
         },
+        {
+          name:'roundupStandardSize',
+          label:'Round-up Price According To Standard Sizes?',
+          type:'checkbox',
+          defaultValue: true,
+          admin:{
+            condition: (_,{hasStandardSizes})=> Boolean(hasStandardSizes) || false
+          }
+        },
       ]
     },
     {

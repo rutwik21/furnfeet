@@ -1,7 +1,7 @@
 import { PRODUCT_CATEGORIES } from '@/config'
-import { CartItem as CartItemm, useCart } from '@/hooks/use-cart'
+import { useCart } from '@/hooks/use-cart'
+import { CartItem as CartItemm} from '@/lib/custom_interfaces'
 import { formatPrice } from '@/lib/utils'
-import { Product } from '@/payload-types'
 import { ImageIcon, X } from 'lucide-react'
 import Image from 'next/image'
 

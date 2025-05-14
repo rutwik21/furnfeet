@@ -11,7 +11,13 @@ import { Product, User } from '../../payload-types'
 const addUser: BeforeChangeHook<Product> = async ({
   req,
   data,
+  operation
 }) => {
+  
+  if (operation === 'update') {
+    return data
+  }
+
   const user = req.user
 
   return { ...data, user: user.id }
@@ -20,7 +26,11 @@ const addUser: BeforeChangeHook<Product> = async ({
 const syncUser: AfterChangeHook<Product> = async ({
   req,
   doc,
+  operation
 }) => {
+  if (operation === 'update') {
+    return
+  }
   const fullUser = await req.payload.findByID({
     collection: 'users',
     id: req.user.id,
@@ -330,19 +340,71 @@ export const Products: CollectionConfig = {
       ],
     },
     {
-      name: 'price',
-      label:'Price',
-      type:'relationship',
-      relationTo:'productPriceList',
-      hasMany:false,
+      type:'row',
+      fields:[
+        {
+          name: 'price',
+          label:'Price',
+          type:'relationship',
+          relationTo:'productPriceList',
+          hasMany:false,
+          required: true,
+        },
+        {
+          name: 'quantity',
+          label: 'Quantity',
+          type: 'number',
+          defaultValue: -1,
+          required: true,
+        },
+        {
+          name: 'margin',
+          label: 'Margin in percents on MRP (Mark down)',
+          type: 'number',
+          required: true,
+        },
+      ]
+    },
+    {
+      name: 'isCashOnDeliveryOptionAvailable',
+      label: 'Allow cash on delivery',
+      type: 'checkbox',
+      defaultValue: true,
+      required: true,
+    },
+    
+    {
+      name: 'overrideCommission',
+      label: 'Override commissions?',
+      type: 'checkbox',
+      defaultValue: false,
       required: true,
     },
     {
-      name: 'quantity',
-      label: 'Quantity',
-      type: 'number',
-      defaultValue: -1,
-      required: true,
+      type:'row',
+      fields:[
+        {
+          name: 'architect',
+          label: 'Architect',
+          type: 'number',
+          required: true,
+        },
+        {
+          name: 'interiorDesigner',
+          label: 'Interior designer',
+          type: 'number',
+          required: true,
+        },
+        {
+          name: 'karagir',
+          label: 'Karagir',
+          type: 'number',
+          required: true,
+        },
+      ],
+      admin:{
+        condition: (_,{overrideCommission})=> Boolean(overrideCommission) || false
+      }
     },
     {
       name: 'approvedForSale',
@@ -369,30 +431,6 @@ export const Products: CollectionConfig = {
         },
       ],
     },
-    // {
-    //   name: 'priceId',
-    //   access: {
-    //     create: () => false,
-    //     read: () => false,
-    //     update: () => false,
-    //   },
-    //   type: 'text',
-    //   admin: {
-    //     hidden: true,
-    //   },
-    // },
-    // {
-    //   name: 'stripeId',
-    //   access: {
-    //     create: () => false,
-    //     read: () => false,
-    //     update: () => false,
-    //   },
-    //   type: 'text',
-    //   admin: {
-    //     hidden: true,
-    //   },
-    // },
     // {
     //   name: 'product_offer',
     //   label: 'Product Offer',

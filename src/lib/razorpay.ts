@@ -11,6 +11,14 @@ export const RezorpaySuccessResponseValidator = z.object({
     razorpay_payment_id: z.string(),
     razorpay_signature: z.string(),
     orderId: z.string(),
+    commisionPerProduct: z.array(z.object({
+        productName: z.string(), 
+        category: z.string(), 
+        commissionInPercent: z.number(), 
+        commision:  z.number(),
+    })),
+    isEligibleToRecieveCommission: z.boolean(),
+    commisionGoesTo: z.string()
 })
 
 export type TRezorpaySuccessResponseValidator = z.infer<typeof RezorpaySuccessResponseValidator>

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { formatPrice } from '@/lib/utils';
 import { Product } from '@/payload-types';
 import CustomizeProduct from './customizeProduct';
-import { CartItem } from '@/hooks/use-cart';
+import { CartItem } from '@/lib/custom_interfaces';
 
 
 

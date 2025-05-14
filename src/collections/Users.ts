@@ -24,6 +24,7 @@ export const Users: CollectionConfig = {
         })
       },
     },
+    tokenExpiration: 2592000, // 30 days
   },
   access: {
     read: adminsAndUser,
@@ -67,7 +68,6 @@ export const Users: CollectionConfig = {
       name: 'role',
       defaultValue: 'user',
       required: true,
-
       type: 'select',
       options: [
         { label: 'Admin', value: 'admin' },
@@ -83,6 +83,36 @@ export const Users: CollectionConfig = {
       type: 'relationship',
       relationTo:'users',
       hasMany: false,
+    },
+    {
+      name: 'paymentDetails',
+      label: 'Payment Details',
+      type: 'array',
+      fields: [
+        {
+          name: 'label',
+          type: 'select',
+          options: [
+            {label: "UPI", value: "UPI"},
+            {label: "Bank", value: "Bank"},
+            {label: "Wallet", value: "Wallet"},
+          ],
+          required: true,
+          hasMany: false
+        },
+        {
+          name: 'value',
+          type: 'text',
+          required: true,
+        },
+      ]
+      
+    },
+    {
+      name: 'isEligibleForReferalProgram',
+      label: 'Aligible for referal program?',
+      type: 'checkbox',
+      defaultValue: false,
     },
   ],
 }

@@ -14,7 +14,7 @@ import Link from 'next/link';
 import { ExternalLink } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
 import AddToCartButton from '../AddToCartButton';
-import { CartItem } from '@/hooks/use-cart';
+import { CartItem } from '@/lib/custom_interfaces';
 
 
 function CustomizeProduct({product, setFinalPrice, setMrp, setCartItemState, cartItem}:
@@ -60,23 +60,26 @@ function CustomizeProduct({product, setFinalPrice, setMrp, setCartItemState, car
       })
       const onSubmit = ({
         dimensions,
+        fabric,
+        foam
       }: TCustomizedProductValidator) => {
             cartItem.isCustomized = true
-            console.log(1);
             
             if(dimensions && dimensions?.length>0){
                 //@ts-ignore
                 cartItem.dimensions = dimensions
             }
-            console.log(2);
             if(selectedFabric){
+                fabricOptions.forEach(({id,name})=>{
+                    if(id==selectedFabric){
+                        cartItem.fabricName = name
+                    }
+                })
                 cartItem.fabric = selectedFabric
             }
-            console.log(3);
             if(selectedFoam){
                 cartItem.foam = selectedFoam
             }
-            console.log(4);
             let isStandardSize = false;
             if(price?.hasStandardSizes){
                 let mrp = 0;
@@ -89,7 +92,35 @@ function CustomizeProduct({product, setFinalPrice, setMrp, setCartItemState, car
                             isStandardSize = true;
                         }
                     })
+                    if(!isStandardSize && price.roundupStandardSize){
+                        let StandardLength = 0;
+                        let StandardWidth = 0;
+                        let StandardHeight = 0;
+                        price.sizes?.map((p)=>{
+                            if(!StandardLength && p.length >= i.length){
+                                StandardLength = p.length;
+                            }
+                            if(!StandardWidth && p.width >= i.width){
+                                StandardWidth = p.width;
+                            }
+                            if(!StandardHeight && p.height == i.height){
+                                StandardHeight = p.height || 0;
+                            }
+                        });
+                        price.sizes?.map((p)=>{ 
+                            if(p.length == StandardLength && p.width == StandardWidth && p.height == StandardHeight){
+                                mrp = mrp + p.mrp;
+                                finalPrice = finalPrice + (p.finalPrice?p.finalPrice:0);
+                                isStandardSize = true;
+                            }
+                        });
+                        StandardLength = 0;
+                        StandardWidth = 0;
+                        StandardHeight = 0;
+                    }
                 });
+                // cartItem.fabric = fabric;
+                // cartItem.foam = foam;
                 cartItem.price = finalPrice;
                 cartItem.qty = Number(qty);
                 cartItem.totalPrice = Number(qty) * finalPrice;
@@ -139,17 +170,15 @@ function CustomizeProduct({product, setFinalPrice, setMrp, setCartItemState, car
                     mrp = totalSqMtr * Number(price.customizedSizeMrp);
                     finalPrice = totalSqMtr * Number(price.customizedSizeFinalPrice);
                 }
-                
+                // cartItem.fabric = fabric;
+                // cartItem.foam = foam;
                 cartItem.price = finalPrice;
                 cartItem.qty = Number(qty);
                 cartItem.totalPrice = Number(qty) * finalPrice;
                 setMrp(formatPrice(mrp) );
                 setFinalPrice(formatPrice(finalPrice));
             }
-            console.log(5);
-            
             setCustomizedProdSaved(true);
-            console.log(cartItem)
         }
         const [isCustomizedProduct, setIsCustomizedProduct] = useState<boolean>(false);
         const [fabricOptions, setFabricOptions] = useState<Product[]>([]);
@@ -161,6 +190,15 @@ function CustomizeProduct({product, setFinalPrice, setMrp, setCartItemState, car
 
 
     const handleChange = (value:boolean) => {
+        if(value === false){
+            const price = typeof product.price != 'string'?product.price:null;
+
+            cartItem.qty = 0;
+            cartItem.price = price?.finalPrice!;
+            cartItem.totalPrice = price?.finalPrice!;
+            setMrp(formatPrice(price?.mrp!));
+            setFinalPrice(formatPrice(price?.finalPrice!));
+        }
         setIsCustomizedProduct(value);
         cartItem.isCustomized = value
     };
@@ -227,7 +265,7 @@ function CustomizeProduct({product, setFinalPrice, setMrp, setCartItemState, car
                                                     <Input className='max-w-12 p-1 m-0 md:p-2 md:max-w-16 ' 
                                                         // min={ typeof product.price!='string'? product.price.minLength!:1 } 
                                                         // max={ typeof product.price!='string'? product.price.maxLength!:1000 } 
-                                                        type='number' defaultValue={size.length} 
+                                                        type='text' defaultValue={size.length} 
                                                         {...register(`dimensions.${i}.length`)}
                                                         disabled={!price?.whatIsCustomizable?.includes('length')}/>
                                                     <span >L x </span>
@@ -237,7 +275,7 @@ function CustomizeProduct({product, setFinalPrice, setMrp, setCartItemState, car
                                                     <Input className='max-w-12 p-1 m-0 md:p-2 md:max-w-16 ' 
                                                         // min={ typeof product.price!='string'? product.price.minWidth!:1 } 
                                                         // max={ typeof product.price!='string'? product.price.maxWidth!:1000 } 
-                                                        type='number' defaultValue={size.width}
+                                                        type='text' defaultValue={size.width}
                                                         {...register(`dimensions.${i}.width`)}
                                                         disabled={!price?.whatIsCustomizable?.includes('width')} />
                                                     <span >W </span> 
@@ -249,7 +287,7 @@ function CustomizeProduct({product, setFinalPrice, setMrp, setCartItemState, car
                                                     <Input className='ms-1 max-w-12 p-1 m-0 md:p-2 md:max-w-16 ' 
                                                         // min={ typeof product.price!='string'? product.price.minHeight!:1 } 
                                                         // max={ typeof product.price!='string'? product.price.maxHeight!:1000 } 
-                                                        type='number' defaultValue={size.height} 
+                                                        type='text' defaultValue={size.height} 
                                                         {...register(`dimensions.${i}.height`)}
                                                         disabled={!price?.whatIsCustomizable?.includes('height')}/>
                                                     <span >H</span>
@@ -284,34 +322,33 @@ function CustomizeProduct({product, setFinalPrice, setMrp, setCartItemState, car
                                                 <Input className='max-w-12 p-1 m-0 md:p-2 md:max-w-16 ' 
                                                     // min={ typeof product.price!='string'? product.price.minLength!:1 } 
                                                     // max={ typeof product.price!='string'? product.price.maxLength!:1000 } 
-                                                    type='number' defaultValue={size.length} 
+                                                    type='text' defaultValue={size.length} 
                                                     {...register(`dimensions.${0}.length`)}
                                                     disabled={!price?.whatIsCustomizable?.includes('length')}/>
                                                 <span >L x </span>
                                             </div>
                                             
-                                        
-                                        {
                                             <div className="flex gap-1 items-center m-0 p-0">
                                                 <Input className='max-w-12 p-1 m-0 md:p-2 md:max-w-16 ' 
                                                     // min={ typeof product.price!='string'? product.price.minWidth!:1 } 
                                                     // max={ typeof product.price!='string'? product.price.maxWidth!:1000 } 
-                                                    type='number' defaultValue={size.width}
+                                                    type='text' defaultValue={size.width}
                                                     {...register(`dimensions.${0}.width`)}
                                                     disabled={!price?.whatIsCustomizable?.includes('width')} />
                                                 <span >W </span> 
-                                            </div>}
+                                            </div>
                                         {size.height?
                                             <div className="flex gap-1 items-center m-0 p-0">
                                                 <span >x </span> 
                                                 <Input className='ms-1 max-w-12 p-1 m-0 md:p-2 md:max-w-16 ' 
                                                     // min={ typeof product.price!='string'? product.price.minHeight!:1 } 
                                                     // max={ typeof product.price!='string'? product.price.maxHeight!:1000 } 
-                                                    type='number' defaultValue={size.height} 
+                                                    type='text' defaultValue={size.height} 
                                                     {...register(`dimensions.${0}.height`)}
                                                     disabled={!price?.whatIsCustomizable?.includes('height')}/>
                                                 <span >H</span>
-                                            </div>:null}
+                                            </div>
+                                        :null}
                                         
                                     </div>
                                     {errors?.dimensions?.length! > 0  && (
@@ -388,6 +425,9 @@ function CustomizeProduct({product, setFinalPrice, setMrp, setCartItemState, car
                             <Button type='submit' size='lg' variant={'outline'} className='w-full' >Save</Button>
                             {customizedProdSaved? <AddToCartButton product={product} cartItem={cartItem} />:null}
                         </div>
+                        {product.quantity>0 && Number(cartItem.qty) > Number(product.quantity)?
+                            <p className='text-red-700 text-center text-sm mt-2'>Available quantity is {product.quantity}</p>
+                        :null}
                     </form>
                 </div>
                 

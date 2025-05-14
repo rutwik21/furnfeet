@@ -101,8 +101,11 @@ const Page = async ({ params }: PageProps) => {
           <div className='mt-2 lg:col-start-2 lg:row-span-2 lg:mt-8 lg:self-start'>
             <div className='mt-4'>
               <h1 className='text-xl font-bold tracking-tight text-gray-900 sm:text-4xl'>
-                {product.name}
+                {product.name} 
                 <p className='text-base font-normal text-muted-foreground mt-1'>{label}</p>
+                  {product.quantity>0 && product.quantity<10? 
+                  <p className='text-red-700 text-sm font-normal tracking-wide mt-1'>Hurry! Only {product.quantity} left</p>
+                  :null}
               </h1>
             </div>
             <ProductPriceAndCart product={product}/>
@@ -111,12 +114,12 @@ const Page = async ({ params }: PageProps) => {
               product.description?
               <section className='mt-4'>
 
-                <p className='font-semibold'>Product Description:</p>
+                <p className='font-semibold mb-2'>Product Description:</p>
 
-                <div className=' space-y-6'>
-                  <p className='text-sm md:text-base text-muted-foreground'>
-                    {product.description}
-                  </p>
+                <div className='space-y-6'>
+                  {product.description.split('/n').map((e,i)=>{
+                    return <p key={i} className='text-sm md:text-base text-muted-foreground'>{e}</p>
+                  })}
                 </div>
 
                 {/* <div className='mt-6 flex items-center'>
