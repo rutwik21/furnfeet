@@ -1,17 +1,5 @@
 "use client"
-import { Label } from '@/components/ui/label'
-import { Checkbox } from "@/components/ui/checkbox"
-import { useEffect, useState } from 'react'
-import { Input } from '@/components/ui/input';
 import { Product } from '@/payload-types';
-import { trpc } from '@/trpc/client';
-import SearchableDropdown from './searchableProductDropdown';
-import { z } from "zod"
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '../ui/button';
-import Link from 'next/link';
-import { ExternalLink } from 'lucide-react';
 import ProductPrice from './productPrice';
 import AddToCartButton from '../AddToCartButton';
 import { notFound } from 'next/navigation';

@@ -24,7 +24,7 @@ const BREADCRUMBS = [
 ]
 
 const Page = async ({ params }: PageProps) => {
-  const { productId } = params
+  const { productId } = await params
 
   const payload = await getPayloadClient()
 
@@ -116,9 +116,9 @@ const Page = async ({ params }: PageProps) => {
 
                 <p className='font-semibold mb-2'>Product Description:</p>
 
-                <div className='space-y-6'>
+                <div className='space-y-2'>
                   {product.description.split('/n').map((e,i)=>{
-                    return <p key={i} className='text-sm md:text-base text-muted-foreground'>{e}</p>
+                    return <p key={i} className='text-sm md:text-base p-0 m-0 text-muted-foreground'>{e}</p>
                   })}
                 </div>
 

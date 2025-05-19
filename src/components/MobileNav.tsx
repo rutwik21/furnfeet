@@ -1,13 +1,15 @@
 'use client'
 
 import { PRODUCT_CATEGORIES } from '@/config'
-import { Menu, X } from 'lucide-react'
+import { User } from '@/payload-types'
+import { LogIn, Menu, UserPlus, X } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import UserAccountNav from './UserAccountNav'
 
-const MobileNav = () => {
+const  MobileNav = ({user}:{user:User | null}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const pathname = usePathname()
@@ -62,36 +64,54 @@ const MobileNav = () => {
               </button>
             </div>
 
+            {
+              user?
+                <UserAccountNav user={user} />
+              :<div className='space-y-6 border-t border-gray-200 px-4 py-6'>
+                  <div className='flow-root'>
+                    <Link
+                      onClick={() => closeOnCurrent('/sign-in')}
+                      href='/sign-in'
+                      className='flex gap-2 -m-2 p-2 font-medium text-gray-900 pb-4 border-b'>
+                      <LogIn />
+                      Sign in
+                    </Link>
+                  </div>
+                  <div className='flow-root'>
+                    <Link
+                      onClick={() => closeOnCurrent('/sign-up')}
+                      href='/sign-up'
+                      className='flex gap-2 -m-2 p-2 font-medium text-gray-900 pb-4 border-b'>
+                      <UserPlus />
+                      Sign up
+                    </Link>
+                  </div>
+
+                </div>
+            }
+
             <div className='mt-2'>
               <ul>
                 {PRODUCT_CATEGORIES.map((category) => (
                   <li
                     key={category.label}
-                    className='space-y-10 px-4 pb-8 pt-10'>
+                    className=' px-4 pb-10'>
                     <div className='border-b border-gray-200'>
                       <div className='-mb-px flex'>
-                        <p className='border-transparent text-gray-900 flex-1 whitespace-nowrap border-b-2 py-4 text-base font-medium'>
+                        <p className='border-transparent text-gray-900 flex-1 whitespace-nowrap pb-2 border-b-2 text-base font-medium'>
                           {category.label}
                         </p>
                       </div>
                     </div>
 
-                    <div className='grid grid-cols-2 gap-y-10 gap-x-4'>
+                    <div className='grid grid-cols-2 gap-x-4'>
                       {category.featured.map((item,i) => (
                         <div
                           key={i}
                           className='group relative text-sm'>
-                          {/* <div className='relative aspect-square overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75'>
-                            <Image
-                              fill
-                              src={item.imageSrc}
-                              alt='product category image'
-                              className='object-cover object-center'
-                            />
-                          </div> */}
                           <Link
                             href={item.href}
-                            className='mt-6 block font-medium text-gray-900'>
+                            className='mt-2 block font-medium text-gray-900'>
                             {item.name}
                           </Link>
                         </div>
@@ -101,26 +121,7 @@ const MobileNav = () => {
                 ))}
               </ul>
             </div>
-
-            <div className='space-y-6 border-t border-gray-200 px-4 py-6'>
-              <div className='flow-root'>
-                <Link
-                  onClick={() => closeOnCurrent('/sign-in')}
-                  href='/sign-in'
-                  className='-m-2 block p-2 font-medium text-gray-900'>
-                  Sign in
-                </Link>
-              </div>
-              <div className='flow-root'>
-                <Link
-                  onClick={() => closeOnCurrent('/sign-up')}
-                  href='/sign-up'
-                  className='-m-2 block p-2 font-medium text-gray-900'>
-                  Sign up
-                </Link>
-              </div>
-
-            </div>
+            
           </div>
         </div>
       </div>

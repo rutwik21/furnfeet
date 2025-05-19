@@ -66,13 +66,13 @@ const CancelOrder = ({productId, orderId}
                   <AlertDialogTitle>Reason for cancellation</AlertDialogTitle>
                   <AlertDialogDescription>
                     Please tell us the reason for cancellation, this information only help us to improve our service.
-                    <div className='mt-2'>
-                      <SearchableDropdown
-                        className='md:w-full w-full'
-                        options={ORDER_CANCELATION_REASONS} 
-                        placeholder='Select reason' 
-                        getSelectedOption={setCancellationReason}/>
-                    </div>
+                   
+                    <SearchableDropdown
+                      className='md:w-full w-full mt-2'
+                      options={ORDER_CANCELATION_REASONS} 
+                      placeholder='Select reason' 
+                      getSelectedOption={setCancellationReason}/>
+                    
                     {
                       cancellationReason=="other"?
                       <div  className='mt-2'>

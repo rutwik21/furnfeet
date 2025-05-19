@@ -32,7 +32,7 @@ const OrderDetailsPage = async ({
 
   if(!productId) return notFound()
 
-  const { user } = await getServerSideUser(nextCookies)
+  const { user } = await getServerSideUser(await nextCookies)
   const payload = await getPayloadClient()
 
   const { docs: orders }= await payload.find({
@@ -112,7 +112,7 @@ const OrderDetailsPage = async ({
 
               <div className='flex items-center justify-between border-gray-200  text-gray-900'>
                 <p className='text-base'>Size</p>
-                <p className='text-base'>
+                <div className='text-base'>
                   <ul>
                     {selectedOrder.dimensions && selectedOrder.dimensions?.length>0?
                       selectedOrder.dimensions?.map((size, i)=>{
@@ -120,7 +120,7 @@ const OrderDetailsPage = async ({
                       })
                     :""}
                   </ul>
-                </p>
+                </div>
               </div>
 
               :null}
@@ -469,4 +469,5 @@ const OrderDetailsPage = async ({
     )
 }
 
-export default dynamic(() => Promise.resolve(OrderDetailsPage) , { ssr: false }); 
+export default OrderDetailsPage;
+// export default dynamic(() => Promise.resolve(OrderDetailsPage) , { ssr: false }); 

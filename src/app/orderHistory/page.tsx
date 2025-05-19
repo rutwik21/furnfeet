@@ -11,7 +11,7 @@ import Link from 'next/link'
 
 const OrderHistory = async()=> {
     const nextCookies = cookies()
-    const { user } = await getServerSideUser(nextCookies);
+    const { user } = await getServerSideUser(await nextCookies);
     if(!user) return <div className='h-[80svh] flex flex-col items-center justify-center'>
         <h3 className='text-xl font-semibold tracking-tight text-gray-900 sm:text-2xl mb-2 '>
           Please sign-in first to see your orders.
