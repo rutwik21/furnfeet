@@ -606,59 +606,7 @@ export const PRODUCT_CATEGORIES = [
             href: `/products?category=home_decor&subcategory=wall_stickers`,
           },
         ]
-      },
-      {
-        name: 'Wall Decor',
-        value: 'wall_decor' as const,
-        commission:[
-          { label: 'Architect' , value: 0 },
-          { label: 'Interior Designer', value: 0 },
-          { label: 'Karagir', value: 0 },
-        ] as const,
-        href: '/products?category=home_decor&subcategory=wall_decor',
-        subCategories: [
-          {
-            name: 'Wall Art',
-            value: 'wall_art' as const,
-            commission:[
-              { label: 'Architect' , value: 0 },
-              { label: 'Interior Designer', value: 0 },
-              { label: 'Karagir', value: 0 },
-            ] as const,
-            href: `/products?category=home_decor&subcategory=wall_art`,
-          },
-          {
-            name: 'Wall Hangings',
-            value: 'wall_hangings' as const,
-            commission:[
-              { label: 'Architect' , value: 0 },
-              { label: 'Interior Designer', value: 0 },
-              { label: 'Karagir', value: 0 },
-            ] as const,
-            href: `/products?category=home_decor&subcategory=wall_hangings`,
-          },
-          {
-            name: 'Wallpaper for Wall',
-            value: 'wallpaper_for_wall' as const,
-            commission:[
-              { label: 'Architect' , value: 0 },
-              { label: 'Interior Designer', value: 0 },
-              { label: 'Karagir', value: 0 },
-            ] as const,
-            href: `/products?category=home_decor&subcategory=wallpaper_for_wall`,
-          },
-          {
-            name: 'Wall Stickers',
-            value: 'wall_stickers' as const,
-            commission:[
-              { label: 'Architect' , value: 0 },
-              { label: 'Interior Designer', value: 0 },
-              { label: 'Karagir', value: 0 },
-            ] as const,
-            href: `/products?category=home_decor&subcategory=wall_stickers`,
-          },
-        ]
-      },
+      }
     ],
     categoryImgSrc: '/nav/homeDecor/home-decor.png'
   },

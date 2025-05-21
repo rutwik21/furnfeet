@@ -25,7 +25,7 @@ const ProductsPage = ({
   return (
     <MaxWidthWrapper className='mt-5 md:mt-0'>
       <ProductReel
-        title={label ?? 'Browse high-quality assets'}
+        title={label ?? 'Browse high-quality products'}
         query={{
           category,
           limit: 40,

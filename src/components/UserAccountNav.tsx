@@ -11,7 +11,7 @@ import {
 } from './ui/dropdown-menu'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/use-auth'
-import { User2,  Users, ScrollText, LogOut } from 'lucide-react'
+import { User2,  Users, ScrollText, LogOut, LayoutDashboard } from 'lucide-react'
 
 const UserAccountNav = ({ user }: { user: User }) => {
   const { signOut } = useAuth()
@@ -83,7 +83,8 @@ const UserAccountNav = ({ user }: { user: User }) => {
         }
         {
           user.role == "admin"?
-          <div className='m-4 font-medium pb-4 border-b'>
+          <div className='flex gap-2 m-4 font-medium pb-4 border-b'>
+            <LayoutDashboard />
             <Link href='/sell'>Seller Dashboard</Link>
           </div>
           :null
